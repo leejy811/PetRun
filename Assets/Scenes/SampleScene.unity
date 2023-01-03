@@ -2128,7 +2128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 955289951}
-  offset: 7.5
+  offset: 6
 --- !u!1 &609473293
 GameObject:
   m_ObjectHideFlags: 0
@@ -2227,7 +2227,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 955289951}
-  offset: 7.5
+  offset: 6
 --- !u!1 &955289949
 GameObject:
   m_ObjectHideFlags: 0
