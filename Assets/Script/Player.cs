@@ -6,6 +6,8 @@ public class Player : MonoBehaviour
 {
     public float jumpForce;
     public float speed;
+    public int maxHealth;
+    public int curHealth;
 
     public bool isJump;
     public bool isSlide;
@@ -46,7 +48,7 @@ public class Player : MonoBehaviour
         if (jumpDown && !isSlide && !isJump)
         {
             isJump = true;
-            anim.SetBool("IsJump", true);
+            //anim.SetBool("IsJump", true);
             rigid.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
     }
@@ -58,11 +60,11 @@ public class Player : MonoBehaviour
         if (!isJump)
         {
             isSlide = slideDown;
-            anim.SetBool("IsSlide", slideDown);
+            //anim.SetBool("IsSlide", slideDown);
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "TileMap")
         {
@@ -72,5 +74,31 @@ public class Player : MonoBehaviour
                 anim.SetBool("IsJump", false);
             }
         }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Obstacle")
+        {
+            curHealth -= 1;
+            if (curHealth == 0)
+            {
+                Die();
+                return;
+            }
+            StartCoroutine(Damage());
+        }
+    }
+
+    IEnumerator Damage()
+    {
+        renderer.color = Color.gray;
+        yield return new WaitForSeconds(0.5f);
+        renderer.color = Color.white;
+    }
+
+    void Die()
+    {
+
     }
 }
