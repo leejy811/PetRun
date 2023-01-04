@@ -11,14 +11,14 @@ public class Player : MonoBehaviour
     public bool isSlide;
 
     public Rigidbody2D rigid;
-    public CapsuleCollider2D collider;
+    public BoxCollider2D collider;
     public SpriteRenderer renderer;
     public Animator anim;
 
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
-        collider = GetComponent<CapsuleCollider2D>();
+        collider = GetComponent<BoxCollider2D>();
         renderer = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
     }
@@ -27,12 +27,16 @@ public class Player : MonoBehaviour
     {
         Jump();
         Slide();
+    }
+
+    void FixedUpdate()
+    {
         Move();
     }
 
     void Move()
     {
-        transform.position = new Vector3(transform.position.x + speed * Time.deltaTime, transform.position.y, transform.position.z);
+        transform.position = new Vector3(transform.position.x + speed * Time.smoothDeltaTime, transform.position.y, transform.position.z);
     }
 
     void Jump()
@@ -62,8 +66,11 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.tag == "TileMap")
         {
-            isJump = false;
-            anim.SetBool("IsJump", false);
+            if (isJump)
+            {
+                isJump = false;
+                anim.SetBool("IsJump", false);
+            }
         }
     }
 }
