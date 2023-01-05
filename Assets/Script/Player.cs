@@ -13,14 +13,14 @@ public class Player : MonoBehaviour
     public bool isSlide;
 
     public Rigidbody2D rigid;
-    public BoxCollider2D collider;
+    public BoxCollider2D runCollider;
+    public BoxCollider2D slideCollider;
     public SpriteRenderer renderer;
     public Animator anim;
 
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
-        collider = GetComponent<BoxCollider2D>();
         renderer = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
     }
@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
         if (jumpDown && !isSlide && !isJump)
         {
             isJump = true;
-            //anim.SetBool("IsJump", true);
+            anim.SetBool("IsJump", true);
             rigid.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
     }
@@ -60,7 +60,9 @@ public class Player : MonoBehaviour
         if (!isJump)
         {
             isSlide = slideDown;
-            //anim.SetBool("IsSlide", slideDown);
+            anim.SetBool("IsSlide", slideDown);
+            runCollider.enabled = !slideDown;
+            slideCollider.enabled = slideDown;
         }
     }
 
