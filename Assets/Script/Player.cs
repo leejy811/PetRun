@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public enum AnimalType { Dog, Cat};
+    public AnimalType animalType;
     public float jumpForce;
     public float speed;
     public int maxHealth;
@@ -12,11 +14,11 @@ public class Player : MonoBehaviour
     public bool isJump;
     public bool isSlide;
 
-    public Rigidbody2D rigid;
     public BoxCollider2D runCollider;
     public BoxCollider2D slideCollider;
-    public SpriteRenderer renderer;
-    public Animator anim;
+    Rigidbody2D rigid;
+    SpriteRenderer renderer;
+    Animator anim;
 
     void Awake()
     {
@@ -29,6 +31,7 @@ public class Player : MonoBehaviour
     {
         Jump();
         Slide();
+        Change();
     }
 
     void FixedUpdate()
@@ -45,7 +48,7 @@ public class Player : MonoBehaviour
     {
         bool jumpDown = Input.GetKeyDown(KeyCode.Space);
 
-        if (jumpDown && !isSlide && !isJump)
+        if (jumpDown && !isSlide && !isJump && animalType == AnimalType.Dog)
         {
             isJump = true;
             anim.SetBool("IsJump", true);
@@ -57,12 +60,31 @@ public class Player : MonoBehaviour
     {
         bool slideDown = Input.GetKey(KeyCode.C);
 
-        if (!isJump)
+        if (!isJump && animalType == AnimalType.Cat)
         {
             isSlide = slideDown;
             anim.SetBool("IsSlide", slideDown);
             runCollider.enabled = !slideDown;
             slideCollider.enabled = slideDown;
+        }
+    }
+
+    void Change()
+    {
+        bool changeDown = Input.GetKeyDown(KeyCode.LeftControl);
+
+        if (changeDown && !isJump && !isSlide)
+        {
+            if (animalType == AnimalType.Dog)
+            {
+                animalType = AnimalType.Cat;
+                anim.SetBool("IsChange", true);
+            }
+            else if (animalType == AnimalType.Cat)
+            {
+                animalType = AnimalType.Dog;
+                anim.SetBool("IsChange", false);
+            }
         }
     }
 
