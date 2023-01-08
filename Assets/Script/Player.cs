@@ -10,12 +10,15 @@ public class Player : MonoBehaviour
     public float speed;
     public int maxHealth;
     public int curHealth;
+    public int score;
 
     public bool isJump;
     public bool isSlide;
 
     public BoxCollider2D runCollider;
     public BoxCollider2D slideCollider;
+    public GameManager gameManager;
+
     Rigidbody2D rigid;
     SpriteRenderer renderer;
     Animator anim;
@@ -111,6 +114,31 @@ public class Player : MonoBehaviour
                 return;
             }
             StartCoroutine(Damage());
+        }
+        else if (other.gameObject.tag == "Item")
+        {
+            Item item = other.gameObject.GetComponent<Item>();
+
+            switch (item.itemType)
+            {
+                case "Bone":
+                    if (animalType == AnimalType.Dog)
+                        score += 500;
+                    else
+                        score += 100;
+                    break;
+                case "Chur":
+                    if (animalType == AnimalType.Cat)
+                        score += 500;
+                    else
+                        score += 100;
+                    break;
+                case "Heart":
+                    curHealth += 1;
+                    break;
+            }
+
+            gameManager.ReturnPool(item);
         }
     }
 
