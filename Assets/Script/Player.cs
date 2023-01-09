@@ -34,13 +34,6 @@ public class Player : MonoBehaviour
         speed = startSpeed;
     }
 
-    void Update()
-    {
-        Jump();
-        Slide();
-        Change();
-    }
-
     void FixedUpdate()
     {
         Move();
@@ -53,11 +46,25 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(transform.position.x + speed * Time.smoothDeltaTime, transform.position.y, transform.position.z);
     }
 
+    void Update()
+    {
+        KeyDown();
+        Change();
+    }
+
+    void KeyDown()
+    {
+        if (animalType == AnimalType.Dog)
+            Jump();
+        else
+            Slide();
+    }
+
     void Jump()
     {
         bool jumpDown = Input.GetKeyDown(KeyCode.Space);
 
-        if (jumpDown && !isSlide && !isJump && animalType == AnimalType.Dog)
+        if (jumpDown && !isJump)
         {
             isJump = true;
             anim.SetBool("IsJump", true);
@@ -67,15 +74,12 @@ public class Player : MonoBehaviour
 
     void Slide()
     {
-        bool slideDown = Input.GetKey(KeyCode.C);
+        bool slideDown = Input.GetKey(KeyCode.Space);
 
-        if (!isJump && animalType == AnimalType.Cat)
-        {
-            isSlide = slideDown;
-            anim.SetBool("IsSlide", slideDown);
-            runCollider.enabled = !slideDown;
-            slideCollider.enabled = slideDown;
-        }
+        isSlide = slideDown;
+        anim.SetBool("IsSlide", slideDown);
+        runCollider.enabled = !slideDown;
+        slideCollider.enabled = slideDown;
     }
 
     void Change()
