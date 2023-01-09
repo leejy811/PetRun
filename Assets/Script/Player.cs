@@ -8,9 +8,11 @@ public class Player : MonoBehaviour
     public AnimalType animalType;
     public float jumpForce;
     public float speed;
+    public float startSpeed;
+    public float acceleration;
     public int maxHealth;
     public int curHealth;
-    public int score;
+    public float score;
 
     public bool isJump;
     public bool isSlide;
@@ -28,6 +30,8 @@ public class Player : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         renderer = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+
+        speed = startSpeed;
     }
 
     void Update()
@@ -44,6 +48,8 @@ public class Player : MonoBehaviour
 
     void Move()
     {
+        speed += acceleration * Time.smoothDeltaTime;
+        score += speed * Time.smoothDeltaTime;
         transform.position = new Vector3(transform.position.x + speed * Time.smoothDeltaTime, transform.position.y, transform.position.z);
     }
 
@@ -135,6 +141,8 @@ public class Player : MonoBehaviour
                     break;
                 case "Heart":
                     curHealth += 1;
+                    if (curHealth > maxHealth)
+                        curHealth = maxHealth;
                     break;
             }
 

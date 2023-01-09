@@ -4809,7 +4809,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animalType: 0
   jumpForce: 20
-  speed: 3
+  speed: 0
+  startSpeed: 3
+  acceleration: 0.1
   maxHealth: 3
   curHealth: 3
   score: 0
