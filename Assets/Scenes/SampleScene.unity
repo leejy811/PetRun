@@ -3147,7 +3147,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &609473294
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4810,8 +4810,8 @@ MonoBehaviour:
   animalType: 0
   jumpForce: 20
   speed: 0
-  startSpeed: 3
-  acceleration: 0.1
+  startSpeed: 0
+  acceleration: 0
   maxHealth: 3
   curHealth: 3
   score: 0
