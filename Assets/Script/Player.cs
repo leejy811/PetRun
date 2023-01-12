@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -17,7 +18,8 @@ public class Player : MonoBehaviour
     public bool isJump;
     public bool isSlide;
 
-    public BoxCollider2D runCollider;
+    public BoxCollider2D[] runCollider;
+    public PolygonCollider2D[] jumpCollider;
     public BoxCollider2D slideCollider;
     public GameManager gameManager;
 
@@ -67,18 +69,28 @@ public class Player : MonoBehaviour
         if (jumpDown && !isJump)
         {
             isJump = true;
+            runCollider[0].enabled = false;
+            jumpCollider[0].enabled = true;
             anim.SetBool("IsJump", true);
             rigid.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
     }
 
+    public void JumpAnim()
+    {
+        jumpCollider[0].enabled = false;
+        jumpCollider[1].enabled = true;
+    }
+
+    
+
     void Slide()
     {
         bool slideDown = Input.GetKey(KeyCode.Space);
 
-        isSlide = slideDown;
+        isSlide = slideDown; 
         anim.SetBool("IsSlide", slideDown);
-        runCollider.enabled = !slideDown;
+        runCollider[1].enabled = !slideDown;
         slideCollider.enabled = slideDown;
     }
 
@@ -91,11 +103,15 @@ public class Player : MonoBehaviour
             if (animalType == AnimalType.Dog)
             {
                 animalType = AnimalType.Cat;
+                runCollider[0].enabled = false;
+                runCollider[1].enabled = true;
                 anim.SetBool("IsChange", true);
             }
             else if (animalType == AnimalType.Cat)
             {
                 animalType = AnimalType.Dog;
+                runCollider[1].enabled = false;
+                runCollider[0].enabled = true;
                 anim.SetBool("IsChange", false);
             }
         }
@@ -105,9 +121,11 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.tag == "TileMap")
         {
-            if (isJump)
+            if (isJump && jumpCollider[1].enabled)
             {
                 isJump = false;
+                jumpCollider[1].enabled = false;
+                runCollider[0].enabled = true;
                 anim.SetBool("IsJump", false);
             }
         }

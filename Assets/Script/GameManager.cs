@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Redcode.Pools;
+using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
     public int curMapIndex;
+    public int curBackIndex;
+    public float backGroundSize;
     public GameObject player;
     public GameObject[] maps;
+    public Transform[] backGround;
     MapInfo[] mapInfos;
     PoolManager poolManager;
 
@@ -25,6 +29,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         MapCheck();
+        BackCheck();
     }
 
     void MapCheck() { 
@@ -32,33 +37,53 @@ public class GameManager : MonoBehaviour
 
         if (mapInfos[curMapIndex].length / 2 - distance < 16)
         {
-            int ranIndex = 0;
-            int pastMapIndex = 0;
+            PlaceMap();
+            PlaceItem();
+        }
+    }
 
-            while (true)
+    void PlaceMap()
+    {
+        int ranIndex = 0;
+        int pastMapIndex = 0;
+
+        while (true)
+        {
+            ranIndex = Random.Range(0, maps.Length);
+
+            if (ranIndex != curMapIndex)
             {
-                ranIndex = Random.Range(0, maps.Length);
-
-                if (ranIndex != curMapIndex)
-                {
-                    pastMapIndex = curMapIndex;
-                    curMapIndex = ranIndex;
-                    break;
-                }
+                pastMapIndex = curMapIndex;
+                curMapIndex = ranIndex;
+                break;
             }
+        }
 
-            maps[curMapIndex].transform.position = new Vector3(maps[pastMapIndex].transform.position.x + mapInfos[pastMapIndex].length/2 + mapInfos[curMapIndex].length/2, 0, 0);
+        maps[curMapIndex].transform.position = new Vector3(maps[pastMapIndex].transform.position.x + mapInfos[pastMapIndex].length / 2 + mapInfos[curMapIndex].length / 2, 0, 0);
+    }
 
-            foreach (Transform spawnPos in mapInfos[curMapIndex].itemSpawnPos)
+    void PlaceItem()
+    {
+        foreach (Transform spawnPos in mapInfos[curMapIndex].itemSpawnPos)
+        {
+            Item newItem = Spawn();
+            if (newItem != null)
             {
-                Item newItem = Spawn();
-                if (newItem != null)
-                {
-                    newItem.transform.position = spawnPos.position;
-                    newItem.Init();
-                    newItem.manager = this;
-                }
+                newItem.transform.position = spawnPos.position;
+                newItem.Init();
+                newItem.manager = this;
             }
+        }
+    }
+
+    void BackCheck()
+    {
+        float distance = backGround[curBackIndex].position.x - player.transform.position.x;
+
+        if (distance < 6)
+        {
+            curBackIndex = curBackIndex == 0 ? 1 : 0;
+            backGround[curBackIndex].position = curBackIndex == 0 ? new Vector3(backGround[1].position.x + backGroundSize, 0, 10) : new Vector3(backGround[0].position.x + backGroundSize, 0, 10);
         }
     }
 
