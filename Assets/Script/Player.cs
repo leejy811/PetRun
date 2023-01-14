@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class Player : MonoBehaviour
 {
@@ -17,15 +18,19 @@ public class Player : MonoBehaviour
 
     public bool isJump;
     public bool isSlide;
+    public bool[] isParticle;
 
     public BoxCollider2D[] runCollider;
     public PolygonCollider2D[] jumpCollider;
     public BoxCollider2D slideCollider;
     public GameManager gameManager;
+    public GameObject[] particle;
 
     Rigidbody2D rigid;
     SpriteRenderer renderer;
     Animator anim;
+    Coroutine curParticleCoroutine;
+    Coroutine curDamageCoroutine;
 
     void Awake()
     {
@@ -100,8 +105,12 @@ public class Player : MonoBehaviour
 
         if (changeDown && !isJump && !isSlide)
         {
+            if (curParticleCoroutine != null)
+                StopCoroutine(curParticleCoroutine);
+
             if (animalType == AnimalType.Dog)
             {
+                curParticleCoroutine = StartCoroutine(ChangeParticle(1));
                 animalType = AnimalType.Cat;
                 runCollider[0].enabled = false;
                 runCollider[1].enabled = true;
@@ -109,12 +118,25 @@ public class Player : MonoBehaviour
             }
             else if (animalType == AnimalType.Cat)
             {
+                curParticleCoroutine = StartCoroutine(ChangeParticle(0));
                 animalType = AnimalType.Dog;
                 runCollider[1].enabled = false;
                 runCollider[0].enabled = true;
                 anim.SetBool("IsChange", false);
             }
         }
+    }
+
+    IEnumerator ChangeParticle(int index)
+    {
+        int preIndex = index == 0 ? 1 : 0;
+
+        if (particle[preIndex].activeSelf == true)
+            particle[preIndex].SetActive(false);
+
+        particle[index].SetActive(true);
+        yield return new WaitForSeconds(1f);
+        particle[index].SetActive(false);
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -141,7 +163,10 @@ public class Player : MonoBehaviour
                 Die();
                 return;
             }
-            StartCoroutine(Damage());
+            if (curDamageCoroutine!= null)
+                StopCoroutine(curDamageCoroutine);
+
+            curDamageCoroutine = StartCoroutine(Damage());
         }
         else if (other.gameObject.tag == "Item")
         {
