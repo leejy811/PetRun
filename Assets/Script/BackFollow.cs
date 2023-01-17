@@ -9,6 +9,8 @@ public class BackFollow : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (player.isDead) return;
+
         transform.position = new Vector3(transform.position.x + player.speed * speedRatio * Time.smoothDeltaTime, 0, 10);
     }
 }

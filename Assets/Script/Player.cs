@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.ParticleSystem;
 
 public class Player : MonoBehaviour
 {
@@ -18,7 +17,7 @@ public class Player : MonoBehaviour
 
     public bool isJump;
     public bool isSlide;
-    public bool[] isParticle;
+    public bool isDead;
 
     public BoxCollider2D[] runCollider;
     public PolygonCollider2D[] jumpCollider;
@@ -43,6 +42,9 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (isDead) 
+            return;
+
         Move();
     }
 
@@ -55,6 +57,9 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        if (isDead)
+            return;
+
         KeyDown();
         Change();
     }
@@ -206,6 +211,9 @@ public class Player : MonoBehaviour
 
     void Die()
     {
+        anim.SetTrigger("doDie");
+        isDead = true;
 
+        //게임 오버 UI작동
     }
 }
