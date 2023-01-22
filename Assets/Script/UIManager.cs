@@ -22,9 +22,8 @@ public class UIManager : MonoBehaviour
     public Image[] Life;
     public Sprite heart, noHeart;
 
-    //Jump Slide ¹öÆ°
-    public Sprite jump, slide;
-    public Image jumpSlideButton;
+    public GameObject[] jumpSlideButton;
+    public bool isSlideButtonDown;
 
     void Update()
     {
@@ -41,29 +40,36 @@ public class UIManager : MonoBehaviour
                 Life[i].sprite = heart;
             }
         }
-        /* highscore
-        highScoreText.text = string.Format("{0:n0}", player.highscore);
-        */
+
         scoreText.text = string.Format("{0:n0}", player.score);
-
-        if(player.curHealth == 0)
-        {
-            GameOver();
-        }
-
-        Change();
     }
 
     public void Change()
     {
-        if(player.animalType == Player.AnimalType.Dog)
-        {
-            jumpSlideButton.sprite = jump;
-        }
+        ChangeButton();
+
+        player.Change(true);
+    }
+
+    void ChangeButton()
+    {
+        int curIndex = jumpSlideButton[0].activeSelf == true ? 0 : 1;
+        int nextIndex = curIndex == 0 ? 1 : 0;
+
+        jumpSlideButton[curIndex].SetActive(false);
+        jumpSlideButton[nextIndex].SetActive(true);
+    }
+
+    public void SlideButton(bool isDown)
+    {
+        isSlideButtonDown = isDown;
+
+        Image button = jumpSlideButton[1].GetComponent<Image>();
+        if (isSlideButtonDown)
+            button.color = Color.gray;
         else
-        {
-            jumpSlideButton.sprite = slide;
-        }
+            button.color = Color.white;
+
     }
 
     public void GameStart()
@@ -76,6 +82,15 @@ public class UIManager : MonoBehaviour
     {
         howToPlayPanel.SetActive(false);
         inGamePanel.SetActive(true);
+
+        StartCoroutine(StartSet());
+    }
+
+    IEnumerator StartSet()
+    {
+        GameManager gameManager = GetComponent<GameManager>();
+        gameManager.isStart= true;
+        yield return null;
     }
 
     public void GameOver()
@@ -84,6 +99,7 @@ public class UIManager : MonoBehaviour
         gameOverPanel.SetActive(true);
 
         curScoreText.text = scoreText.text;
+        highScoreText.text = string.Format("{0:n0}", PlayerPrefs.GetFloat("HighScore"));
     }
 
     public void Restart()

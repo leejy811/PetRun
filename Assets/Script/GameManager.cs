@@ -9,8 +9,10 @@ public class GameManager : MonoBehaviour
     public int curMapIndex;
     public int curBackIndex;
     public float backGroundSize;
+    public bool isStart;
     public GameObject player;
     public GameObject[] maps;
+    public GameObject[] obstarcles;
     public Transform[] backGround;
     MapInfo[] mapInfos;
     PoolManager poolManager;
@@ -30,6 +32,7 @@ public class GameManager : MonoBehaviour
     {
         MapCheck();
         BackCheck();
+        StartCheck();
     }
 
     void MapCheck() { 
@@ -64,6 +67,9 @@ public class GameManager : MonoBehaviour
 
     void PlaceItem()
     {
+        if (!isStart)
+            return;
+
         foreach (Transform spawnPos in mapInfos[curMapIndex].itemSpawnPos)
         {
             Item newItem = Spawn();
@@ -84,6 +90,14 @@ public class GameManager : MonoBehaviour
         {
             curBackIndex = curBackIndex == 0 ? 1 : 0;
             backGround[curBackIndex].position = curBackIndex == 0 ? new Vector3(backGround[1].position.x + backGroundSize, 0, 10) : new Vector3(backGround[0].position.x + backGroundSize, 0, 10);
+        }
+    }
+
+    void StartCheck()
+    {
+        foreach(GameObject obstarcle in obstarcles)
+        {
+            obstarcle.SetActive(isStart);
         }
     }
 

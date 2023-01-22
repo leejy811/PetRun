@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public enum AnimalType { Dog, Cat};
+    public enum AnimalType { Dog, Cat };
     public AnimalType animalType;
     public float jumpForce;
     public float speed;
@@ -23,6 +23,7 @@ public class Player : MonoBehaviour
     public PolygonCollider2D[] jumpCollider;
     public BoxCollider2D slideCollider;
     public GameManager gameManager;
+    public UIManager uiManager;
     public GameObject[] particle;
 
     Rigidbody2D rigid;
@@ -38,11 +39,12 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
 
         speed = startSpeed;
+        PlayerPrefs.GetFloat("HighScore", 0);
     }
 
     void FixedUpdate()
     {
-        if (isDead) 
+        if (isDead)
             return;
 
         Move();
@@ -50,8 +52,12 @@ public class Player : MonoBehaviour
 
     void Move()
     {
-        speed += acceleration * Time.smoothDeltaTime;
-        score += speed * Time.smoothDeltaTime;
+        if (gameManager.isStart)
+        {
+            speed += acceleration * Time.smoothDeltaTime;
+            score += speed * Time.smoothDeltaTime;
+        }
+
         transform.position = new Vector3(transform.position.x + speed * Time.smoothDeltaTime, transform.position.y, transform.position.z);
     }
 
@@ -61,22 +67,23 @@ public class Player : MonoBehaviour
             return;
 
         KeyDown();
-        Change();
+        Change(false);
     }
 
     void KeyDown()
     {
         if (animalType == AnimalType.Dog)
-            Jump();
+            Jump(false);
         else
             Slide();
     }
 
-    void Jump()
+    public void Jump(bool isButtonDown)
     {
-        bool jumpDown = Input.GetKeyDown(KeyCode.Space);
+        bool jumpDown = Input.GetKeyDown(KeyCode.Space) || isButtonDown;
 
-        if (jumpDown && !isJump)
+
+        if (jumpDown && !isJump && gameManager.isStart)
         {
             isJump = true;
             runCollider[0].enabled = false;
@@ -92,21 +99,21 @@ public class Player : MonoBehaviour
         jumpCollider[1].enabled = true;
     }
 
-    
+
 
     void Slide()
     {
-        bool slideDown = Input.GetKey(KeyCode.Space);
+        bool slideDown = (Input.GetKey(KeyCode.Space) || uiManager.isSlideButtonDown) && gameManager.isStart;
 
-        isSlide = slideDown; 
+        isSlide = slideDown;
         anim.SetBool("IsSlide", slideDown);
         runCollider[1].enabled = !slideDown;
         slideCollider.enabled = slideDown;
     }
 
-    void Change()
+    public void Change(bool isButtonDown)
     {
-        bool changeDown = Input.GetKeyDown(KeyCode.LeftControl);
+        bool changeDown = Input.GetKeyDown(KeyCode.LeftControl) || isButtonDown;
 
         if (changeDown && !isJump && !isSlide)
         {
@@ -168,7 +175,7 @@ public class Player : MonoBehaviour
                 Die();
                 return;
             }
-            if (curDamageCoroutine!= null)
+            if (curDamageCoroutine != null)
                 StopCoroutine(curDamageCoroutine);
 
             curDamageCoroutine = StartCoroutine(Damage());
@@ -214,6 +221,10 @@ public class Player : MonoBehaviour
         anim.SetTrigger("doDie");
         isDead = true;
 
+        if (PlayerPrefs.GetFloat("HighScore") < score)
+            PlayerPrefs.SetFloat("HighScore", score);
+
         //게임 오버 UI작동
+        uiManager.GameOver();
     }
 }
