@@ -11,41 +11,34 @@ public class UIManager : MonoBehaviour
     public Text highScoreText;
 
     //panel
-    public GameObject mainpanel;
-    public GameObject ingamepanel;
-    public GameObject howtoplaypanel;
-    public GameObject gameoverpanel;
+    public GameObject mainPanel;
+    public GameObject inGamePanel;
+    public GameObject howToPlayPanel;
+    public GameObject gameOverPanel;
 
-    public Text curscoreText;
+    public Text curScoreText;
 
     // 체력 관련
     public Image[] Life;
-    public int maxhealth;
-    public int curhealth;
-    public Sprite Heart, NoHeart;
+    public Sprite heart, noHeart;
 
     //Jump Slide 버튼
     public Sprite jump, slide;
-    public Image jumpslidebutton;
+    public Image jumpSlideButton;
 
-    private void Start()
-    {
-        maxhealth = player.maxHealth;
-    }
     void Update()
     {
-        curhealth = player.curHealth;
 
-        for (int i = 0; i<maxhealth; i++)
+        for (int i = 0; i<player.maxHealth; i++)
         {
-            Life[i].sprite = NoHeart;
+            Life[i].sprite = noHeart;
         }
 
-        for (int i = 0; i<maxhealth; i++)
+        for (int i = 0; i<player.maxHealth; i++)
         {
-            if (i<curhealth)
+            if (i<player.curHealth)
             {
-                Life[i].sprite = Heart;
+                Life[i].sprite = heart;
             }
         }
         /* highscore
@@ -65,34 +58,32 @@ public class UIManager : MonoBehaviour
     {
         if(player.animalType == Player.AnimalType.Dog)
         {
-            jumpslidebutton.sprite = jump;
+            jumpSlideButton.sprite = jump;
         }
         else
         {
-            jumpslidebutton.sprite = slide;
+            jumpSlideButton.sprite = slide;
         }
     }
 
     public void GameStart()
     {
-        mainpanel.SetActive(false);
-        howtoplaypanel.SetActive(true);
+        mainPanel.SetActive(false);
+        howToPlayPanel.SetActive(true);
     }
 
     public void InGame()
     {
-        howtoplaypanel.SetActive(false);
-        ingamepanel.SetActive(true);
-
-        curhealth = player.maxHealth;
+        howToPlayPanel.SetActive(false);
+        inGamePanel.SetActive(true);
     }
 
     public void GameOver()
     {
-        ingamepanel.SetActive(false);
-        gameoverpanel.SetActive(true);
+        inGamePanel.SetActive(false);
+        gameOverPanel.SetActive(true);
 
-        curscoreText.text = scoreText.text;
+        curScoreText.text = scoreText.text;
     }
 
     public void Restart()
