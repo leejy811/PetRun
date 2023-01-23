@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class MapInfo : MonoBehaviour
 {
-    public enum MapType { Idle, Jump, Slide}
-    public MapType mapType;
     public float length;
-    public Transform[] itemSpawnPos;
+    public Transform[] jumpItemSpawnPos;
+    public Transform[] SlideItemSpawnPos;
 }

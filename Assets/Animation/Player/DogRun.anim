@@ -92,4 +92,11 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0.083333336
+    functionName: DieAnimation
+    data: 
+    objectReferenceParameter: {fileID: 11500000, guid: a6fe7a6c9382ffb4f842f54bce402bad, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

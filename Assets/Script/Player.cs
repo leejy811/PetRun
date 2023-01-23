@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     public bool isJump;
     public bool isSlide;
     public bool isDead;
+    public bool isFall;
 
     public BoxCollider2D[] runCollider;
     public PolygonCollider2D[] jumpCollider;
@@ -44,7 +45,7 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (isDead)
+        if (isFall)
             return;
 
         Move();
@@ -52,7 +53,7 @@ public class Player : MonoBehaviour
 
     void Move()
     {
-        if (gameManager.isStart)
+        if (gameManager.isStart || isFall)
         {
             speed += acceleration * Time.smoothDeltaTime;
             score += speed * Time.smoothDeltaTime;
@@ -218,13 +219,21 @@ public class Player : MonoBehaviour
 
     void Die()
     {
-        anim.SetTrigger("doDie");
         isDead = true;
 
         if (PlayerPrefs.GetFloat("HighScore") < score)
             PlayerPrefs.SetFloat("HighScore", score);
+    }
 
-        //게임 오버 UI작동
-        uiManager.GameOver();
+    public void DieAnimation()
+    {
+        if (isDead)
+        {
+            isFall = true;
+            anim.SetTrigger("doDie");
+
+            //게임 오버 UI작동
+            uiManager.GameOver();
+        }
     }
 }

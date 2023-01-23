@@ -11,74 +11,89 @@ public class GameManager : MonoBehaviour
     public float backGroundSize;
     public bool isStart;
     public GameObject player;
-    public GameObject[] maps;
-    public GameObject[] obstarcles;
     public Transform[] backGround;
-    MapInfo[] mapInfos;
+    public MapInfo[] mapInfos;
+
     PoolManager poolManager;
+    string[] mapType = {"Jump", "Slide", "Idle"};
 
     void Awake()
     {
         poolManager = GetComponent<PoolManager>();
-        mapInfos = new MapInfo[maps.Length];
-        
-        for (int i = 0; i < maps.Length; i++)
-        {
-            mapInfos[i] = maps[i].GetComponent<MapInfo>();
-        }
     }
 
     void Update()
     {
         MapCheck();
         BackCheck();
-        StartCheck();
     }
 
     void MapCheck() { 
-        float distance = player.transform.position.x - maps[curMapIndex].transform.position.x;
+        float distance = player.transform.position.x - mapInfos[curMapIndex].transform.position.x;
 
         if (mapInfos[curMapIndex].length / 2 - distance < 16)
         {
+            int ranMapType = Random.Range(0, 3);
             PlaceMap();
-            PlaceItem();
+            PlaceObstcle(ranMapType);
+            PlaceItem(ranMapType);
         }
     }
 
     void PlaceMap()
     {
-        int ranIndex = 0;
-        int pastMapIndex = 0;
+        curMapIndex = curMapIndex == 0 ? 1 : 0;
 
-        while (true)
-        {
-            ranIndex = Random.Range(0, maps.Length);
-
-            if (ranIndex != curMapIndex)
-            {
-                pastMapIndex = curMapIndex;
-                curMapIndex = ranIndex;
-                break;
-            }
-        }
-
-        maps[curMapIndex].transform.position = new Vector3(maps[pastMapIndex].transform.position.x + mapInfos[pastMapIndex].length / 2 + mapInfos[curMapIndex].length / 2, 0, 0);
+        mapInfos[curMapIndex].transform.position = curMapIndex == 0 ? new Vector3(mapInfos[1].transform.position.x + mapInfos[1].length / 2 + mapInfos[1].length / 2, 0, 0) : new Vector3(mapInfos[0].transform.position.x + mapInfos[0].length / 2 + mapInfos[0].length / 2, 0, 0);
     }
 
-    void PlaceItem()
+    void PlaceObstcle(int mapTypeIndex)
+    {
+        if (!isStart || mapType[mapTypeIndex] == "Idle")
+            return;
+
+        Obstacle newObstacle;
+
+        if (mapType[mapTypeIndex] == "Jump")
+            newObstacle = poolManager.GetFromPool<Obstacle>("Jump");
+        else
+            newObstacle = poolManager.GetFromPool<Obstacle>("Slide");
+
+        newObstacle.transform.position = new Vector3(mapInfos[curMapIndex].transform.position.x, mapInfos[curMapIndex].transform.position.y + newObstacle.placePos.y, 0);
+        newObstacle.gameManager = this;
+    }
+
+    void PlaceItem(int mapTypeIndex)
     {
         if (!isStart)
             return;
 
-        foreach (Transform spawnPos in mapInfos[curMapIndex].itemSpawnPos)
+        if (mapType[mapTypeIndex] == "Jump")
+            foreach (Transform spawnPos in mapInfos[curMapIndex].jumpItemSpawnPos)
+                SetItemPosition(spawnPos);
+        else if (mapType[mapTypeIndex] == "Slide")
+            foreach (Transform spawnPos in mapInfos[curMapIndex].SlideItemSpawnPos)
+                SetItemPosition(spawnPos);
+        else if (mapType[mapTypeIndex] == "Idle")
         {
-            Item newItem = Spawn();
-            if (newItem != null)
-            {
-                newItem.transform.position = spawnPos.position;
-                newItem.Init();
-                newItem.manager = this;
-            }
+            int ranType = Random.Range(0, 2);
+            if (ranType == 0)
+                foreach (Transform spawnPos in mapInfos[curMapIndex].jumpItemSpawnPos)
+                    SetItemPosition(spawnPos);
+            else
+                foreach (Transform spawnPos in mapInfos[curMapIndex].SlideItemSpawnPos)
+                    SetItemPosition(spawnPos);
+        }
+    }
+
+    void SetItemPosition(Transform spawnPos)
+    {
+        Item newItem = Spawn();
+        if (newItem != null)
+        {
+            newItem.transform.position = spawnPos.position + mapInfos[curMapIndex].transform.position;
+            newItem.Init();
+            newItem.manager = this;
         }
     }
 
@@ -90,14 +105,6 @@ public class GameManager : MonoBehaviour
         {
             curBackIndex = curBackIndex == 0 ? 1 : 0;
             backGround[curBackIndex].position = curBackIndex == 0 ? new Vector3(backGround[1].position.x + backGroundSize, 0, 10) : new Vector3(backGround[0].position.x + backGroundSize, 0, 10);
-        }
-    }
-
-    void StartCheck()
-    {
-        foreach(GameObject obstarcle in obstarcles)
-        {
-            obstarcle.SetActive(isStart);
         }
     }
 
@@ -129,6 +136,12 @@ public class GameManager : MonoBehaviour
     public void ReturnPool(Item clone)
     {
         poolManager.TakeToPool<Item>(clone.itemType, clone);
+        clone.isEnable = false;
+    }
+
+    public void ReturnPool(Obstacle clone)
+    {
+        poolManager.TakeToPool<Obstacle>(clone.obstacleType, clone);
         clone.isEnable = false;
     }
 }

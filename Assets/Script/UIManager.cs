@@ -89,8 +89,8 @@ public class UIManager : MonoBehaviour
     IEnumerator StartSet()
     {
         GameManager gameManager = GetComponent<GameManager>();
-        gameManager.isStart= true;
-        yield return null;
+        yield return new WaitForSeconds(3f);
+        gameManager.isStart = true;
     }
 
     public void GameOver()
