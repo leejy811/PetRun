@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     public MapInfo[] mapInfos;
 
     PoolManager poolManager;
-    string[] mapType = {"Jump", "Slide", "Idle"};
+    string[] mapType = { "Idle", "Jump", "Slide"};
 
     void Awake()
     {
@@ -33,7 +33,16 @@ public class GameManager : MonoBehaviour
 
         if (mapInfos[curMapIndex].length / 2 - distance < 16)
         {
-            int ranMapType = Random.Range(0, 3);
+            int ranIndex = Random.Range(0, 100);
+            int ranMapType;
+
+            if (ranIndex >= 90)
+                ranMapType = 0;
+            else if (ranIndex >= 45)
+                ranMapType = 1;
+            else
+                ranMapType = 2;
+
             PlaceMap();
             PlaceObstcle(ranMapType);
             PlaceItem(ranMapType);

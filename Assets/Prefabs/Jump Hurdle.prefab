@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: f842a2b2f2d69854880419b90645f628, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9662f7eb8baa70845b2f59591591e5a6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -103,14 +103,14 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 4.125, y: 3.5625}
+    oldSize: {x: 4, y: 4}
     newSize: {x: 4.125, y: 3.5625}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.8, y: 3.2}
+  m_Size: {x: 2, y: 3}
   m_EdgeRadius: 0
 --- !u!114 &8670062569420337859
 MonoBehaviour:
@@ -126,5 +126,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obstacleType: Jump
   isEnable: 0
-  placePos: {x: 0, y: -1.38, z: 0}
+  placePos: {x: 0, y: -1.8, z: 0}
   gameManager: {fileID: 0}
+  hurdleSprites:
+  - {fileID: 21300000, guid: 9662f7eb8baa70845b2f59591591e5a6, type: 3}
+  - {fileID: 21300000, guid: 4d5f11ce75cc0814395fbacaed7215f4, type: 3}
+  - {fileID: 21300000, guid: 16fece5cad5620144ad10ddea68e3ba9, type: 3}
+  spriteRenderer: {fileID: 0}

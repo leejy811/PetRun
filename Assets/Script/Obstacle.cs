@@ -11,6 +11,14 @@ public class Obstacle : MonoBehaviour, IPoolObject
     public Vector3 placePos;
     public GameManager gameManager;
 
+    public Sprite[] hurdleSprites;
+    public SpriteRenderer spriteRenderer;
+
+    void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
     void Update()
     {
         Return();
@@ -34,6 +42,12 @@ public class Obstacle : MonoBehaviour, IPoolObject
 
     public void OnGettingFromPool()
     {
+        if (obstacleType == "Jump")
+        {
+            int ranIndex = Random.Range(0, hurdleSprites.Length);
+            spriteRenderer.sprite = hurdleSprites[ranIndex];
+        }
+
         isEnable = true;
     }
 }
