@@ -1960,8 +1960,8 @@ Tilemap:
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Origin: {x: -15, y: -6, z: 0}
-  m_Size: {x: 58, y: 6, z: 1}
+  m_Origin: {x: -50, y: -6, z: 0}
+  m_Size: {x: 93, y: 6, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
@@ -1994,7 +1994,7 @@ CompositeCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.3}
   m_GeometryType: 0
   m_GenerationType: 0
   m_EdgeRadius: 0
@@ -2011,10 +2011,10 @@ CompositeCollider2D:
         Y: -30000000
   m_CompositePaths:
     m_Paths:
-    - - {x: 14.999971, y: -6}
-      - {x: 14.999971, y: -3}
-      - {x: -15, y: -3.0000293}
-      - {x: -14.999971, y: -6}
+    - - {x: 14.999971, y: -6.3}
+      - {x: 14.999971, y: -3.3}
+      - {x: -15, y: -3.3000293}
+      - {x: -14.999971, y: -6.3}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
 --- !u!50 &216911697
@@ -3158,8 +3158,8 @@ MonoBehaviour:
   m_RefResolutionY: 180
   m_UpscaleRT: 0
   m_PixelSnapping: 0
-  m_CropFrameX: 0
-  m_CropFrameY: 0
+  m_CropFrameX: 1
+  m_CropFrameY: 1
   m_StretchFill: 0
 --- !u!114 &519420034
 MonoBehaviour:
@@ -9509,7 +9509,7 @@ MonoBehaviour:
   jumpForce: 20
   speed: 0
   startSpeed: 10
-  acceleration: 0.5
+  acceleration: 0
   maxHealth: 3
   curHealth: 3
   score: 0
@@ -14979,7 +14979,7 @@ CompositeCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.3}
   m_GeometryType: 0
   m_GenerationType: 0
   m_EdgeRadius: 0
@@ -14996,10 +14996,10 @@ CompositeCollider2D:
         Y: -30000000
   m_CompositePaths:
     m_Paths:
-    - - {x: 14.999971, y: -6}
-      - {x: 14.999971, y: -3}
-      - {x: -15, y: -3.0000293}
-      - {x: -14.999971, y: -6}
+    - - {x: 14.999971, y: -6.3}
+      - {x: 14.999971, y: -3.3}
+      - {x: -15, y: -3.3000293}
+      - {x: -14.999971, y: -6.3}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
 --- !u!50 &1125837008

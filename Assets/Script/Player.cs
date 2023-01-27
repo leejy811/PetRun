@@ -40,7 +40,7 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
 
         speed = startSpeed;
-        PlayerPrefs.GetFloat("HighScore", 0);
+        PlayerPrefs.SetFloat("HighScore", 0);
     }
 
     void FixedUpdate()
@@ -116,7 +116,7 @@ public class Player : MonoBehaviour
     {
         bool changeDown = Input.GetKeyDown(KeyCode.LeftControl) || isButtonDown;
 
-        if (changeDown && !isJump && !isSlide)
+        if (changeDown && !isJump && !isSlide && gameManager.isStart)
         {
             if (curParticleCoroutine != null)
                 StopCoroutine(curParticleCoroutine);
