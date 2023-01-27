@@ -125,5 +125,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   obstacleType: Jump
+  isEnable: 0
   placePos: {x: 0, y: -1.38, z: 0}
   gameManager: {fileID: 0}

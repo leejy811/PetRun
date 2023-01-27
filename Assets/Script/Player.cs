@@ -225,15 +225,27 @@ public class Player : MonoBehaviour
             PlayerPrefs.SetFloat("HighScore", score);
     }
 
-    public void DieAnimation()
+    public void FallAnimation()
     {
         if (isDead)
         {
             isFall = true;
-            anim.SetTrigger("doDie");
+
+            if (animalType == AnimalType.Dog)
+                anim.SetTrigger("doDogFall");
+            else if (animalType == AnimalType.Cat)
+                anim.SetTrigger("doCatFall");
 
             //게임 오버 UI작동
             uiManager.GameOver();
         }
+    }
+
+    public void RestAnimation()
+    {
+        if (animalType == AnimalType.Dog)
+            anim.SetTrigger("doDogRest");
+        else if (animalType == AnimalType.Cat)
+            anim.SetTrigger("doCatRest");
     }
 }

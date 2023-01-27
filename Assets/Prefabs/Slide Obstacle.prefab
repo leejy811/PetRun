@@ -125,5 +125,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   obstacleType: Slide
+  isEnable: 0
   placePos: {x: 0, y: 2, z: 0}
   gameManager: {fileID: 0}
