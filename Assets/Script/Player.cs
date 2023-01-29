@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     public bool isSlide;
     public bool isDead;
     public bool isFall;
+    public bool isHighScore;
 
     public BoxCollider2D[] runCollider;
     public PolygonCollider2D[] jumpCollider;
@@ -40,7 +41,6 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
 
         speed = startSpeed;
-        PlayerPrefs.SetFloat("HighScore", 0);
     }
 
     void FixedUpdate()
@@ -53,13 +53,15 @@ public class Player : MonoBehaviour
 
     void Move()
     {
-        if (gameManager.isStart || isFall) 
+        if (gameManager.isStart) 
         {
             speed += acceleration * Time.smoothDeltaTime;
             Physics2D.gravity = new Vector2(0, -0.284f * speed * speed);
             jumpPower = 3.5f * Mathf.Sqrt(Physics2D.gravity.y * -1f);
             anim.SetFloat("JumpSpeed", (jumpPower / Physics.gravity.y) * -1f);
-            score += speed * Time.smoothDeltaTime;
+
+            if (!isDead)
+                score += speed * Time.smoothDeltaTime;
         }
 
         transform.position = new Vector3(transform.position.x + speed * Time.smoothDeltaTime, transform.position.y, transform.position.z);
@@ -227,7 +229,10 @@ public class Player : MonoBehaviour
         isDead = true;
 
         if (PlayerPrefs.GetFloat("HighScore") < score)
+        {
+            isHighScore = true;
             PlayerPrefs.SetFloat("HighScore", score);
+        }
     }
 
     public void FallAnimation()

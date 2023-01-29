@@ -25,6 +25,11 @@ public class UIManager : MonoBehaviour
     public GameObject[] jumpSlideButton;
     public bool isSlideButtonDown;
 
+    //트로피 관련
+    public Image trophyImage;
+    public Sprite trophyIdleSprite;
+    public Sprite[] trophyHighSprites;
+
     void Update()
     {
 
@@ -100,6 +105,22 @@ public class UIManager : MonoBehaviour
 
         curScoreText.text = scoreText.text;
         highScoreText.text = string.Format("{0:n0}", PlayerPrefs.GetFloat("HighScore"));
+
+        if (player.isHighScore)
+            StartCoroutine(TrophyAnimation());
+        else
+            trophyImage.sprite = trophyIdleSprite;
+    }
+
+    IEnumerator TrophyAnimation()
+    {
+        foreach(Sprite trophySprite in trophyHighSprites)
+        {
+            trophyImage.sprite = trophySprite;
+            yield return new WaitForSeconds(0.083f);
+        }
+
+        StartCoroutine(TrophyAnimation());
     }
 
     public void Restart()
