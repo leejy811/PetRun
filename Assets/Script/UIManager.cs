@@ -39,7 +39,7 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
-
+        /*
         for (int i = 0; i<player.maxHealth; i++)
         {
             Life[i].sprite = noHeart;
@@ -52,6 +52,7 @@ public class UIManager : MonoBehaviour
                 Life[i].sprite = heart;
             }
         }
+        */
 
         scoreText.text = string.Format("{0:n0}", player.score);
     }
