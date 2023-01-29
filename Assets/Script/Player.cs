@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
 {
     public enum AnimalType { Dog, Cat };
     public AnimalType animalType;
-    public float jumpForce;
+    public float jumpPower;
     public float speed;
     public float startSpeed;
     public float acceleration;
@@ -53,9 +53,12 @@ public class Player : MonoBehaviour
 
     void Move()
     {
-        if (gameManager.isStart || isFall)
+        if (gameManager.isStart || isFall) 
         {
             speed += acceleration * Time.smoothDeltaTime;
+            Physics2D.gravity = new Vector2(0, -0.284f * speed * speed);
+            jumpPower = 3.5f * Mathf.Sqrt(Physics2D.gravity.y * -1f);
+            anim.SetFloat("JumpSpeed", (jumpPower / Physics.gravity.y) * -1f);
             score += speed * Time.smoothDeltaTime;
         }
 
@@ -90,7 +93,7 @@ public class Player : MonoBehaviour
             runCollider[0].enabled = false;
             jumpCollider[0].enabled = true;
             anim.SetBool("IsJump", true);
-            rigid.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            rigid.velocity = new Vector2(rigid.velocity.x, jumpPower);
         }
     }
 

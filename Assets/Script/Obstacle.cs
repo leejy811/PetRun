@@ -48,6 +48,11 @@ public class Obstacle : MonoBehaviour, IPoolObject
             spriteRenderer.sprite = hurdleSprites[ranIndex];
         }
 
+        BoxCollider2D collider = GetComponent<BoxCollider2D>();
+
+        if (collider.enabled == false)
+            collider.enabled = true;
+
         isEnable = true;
     }
 }

@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
         else
             newObstacle = poolManager.GetFromPool<Obstacle>("Slide");
 
-        newObstacle.transform.position = new Vector3(mapInfos[curMapIndex].transform.position.x, mapInfos[curMapIndex].transform.position.y + newObstacle.placePos.y, 0);
+        newObstacle.transform.position = new Vector3(mapInfos[curMapIndex].transform.position.x, mapInfos[curMapIndex].transform.position.y + newObstacle.placePos.y, -1);
         newObstacle.gameManager = this;
     }
 
