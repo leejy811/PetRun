@@ -30,6 +30,13 @@ public class UIManager : MonoBehaviour
     public Sprite trophyIdleSprite;
     public Sprite[] trophyHighSprites;
 
+    GameManager gameManager;
+
+    void Awake()
+    {
+        gameManager = GetComponent<GameManager>();
+    }
+
     void Update()
     {
 
@@ -51,6 +58,9 @@ public class UIManager : MonoBehaviour
 
     public void Change()
     {
+        if (!gameManager.isStart)
+            return;
+
         ChangeButton();
 
         player.Change(true);
@@ -67,6 +77,9 @@ public class UIManager : MonoBehaviour
 
     public void SlideButton(bool isDown)
     {
+        if (!gameManager.isStart)
+            return;
+
         isSlideButtonDown = isDown;
 
         Image button = jumpSlideButton[1].GetComponent<Image>();
@@ -93,7 +106,6 @@ public class UIManager : MonoBehaviour
 
     IEnumerator StartSet()
     {
-        GameManager gameManager = GetComponent<GameManager>();
         yield return new WaitForSeconds(3f);
         gameManager.isStart = true;
     }
