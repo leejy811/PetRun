@@ -19,8 +19,9 @@ public class UIManager : MonoBehaviour
     public Text curScoreText;
 
     // 체력 관련
-    public Image[] Life;
-    public Sprite heart, noHeart;
+    //public Image[] Life;
+    //public Sprite heart, noHeart;
+    public Image healthImage;
 
     public GameObject[] jumpSlideButton;
     public bool isSlideButtonDown;
@@ -53,6 +54,8 @@ public class UIManager : MonoBehaviour
             }
         }
         */
+
+        healthImage.fillAmount = player.curHealth / player.maxHealth;
 
         scoreText.text = string.Format("{0:n0}", player.score);
     }
@@ -116,13 +119,21 @@ public class UIManager : MonoBehaviour
         inGamePanel.SetActive(false);
         gameOverPanel.SetActive(true);
 
-        curScoreText.text = scoreText.text;
-        highScoreText.text = string.Format("{0:n0}", PlayerPrefs.GetFloat("HighScore"));
+        int curScore = (int)player.score;
+        int highScore = (int)PlayerPrefs.GetFloat("HighScore");
 
         if (player.isHighScore)
+        {
+            curScoreText.text = string.Format("{0:n0}", highScore);
             StartCoroutine(TrophyAnimation());
+        }
         else
+        {
+            curScoreText.text = string.Format("{0:n0}", curScore);
             trophyImage.sprite = trophyIdleSprite;
+        }
+
+        highScoreText.text = string.Format("{0:n0}", highScore);
     }
 
     IEnumerator TrophyAnimation()

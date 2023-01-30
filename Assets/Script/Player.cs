@@ -11,8 +11,8 @@ public class Player : MonoBehaviour
     public float speed;
     public float startSpeed;
     public float acceleration;
-    public int maxHealth;
-    public int curHealth;
+    public float maxHealth;
+    public float curHealth;
     public float score;
 
     public bool isJump;
@@ -41,6 +41,7 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
 
         speed = startSpeed;
+        curHealth = maxHealth;
     }
 
     void FixedUpdate()
@@ -173,13 +174,18 @@ public class Player : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (isDead)
+            return;
+
         if (other.gameObject.tag == "Obstacle")
         {
-            curHealth -= 1;
+
+            curHealth -= 30;
             BoxCollider2D obstacleColider = other.gameObject.GetComponent<BoxCollider2D>();
             obstacleColider.enabled = false;
-            if (curHealth == 0)
+            if (curHealth <= 0)
             {
+                curHealth = 0;
                 Die();
                 return;
             }
@@ -190,31 +196,35 @@ public class Player : MonoBehaviour
         }
         else if (other.gameObject.tag == "Item")
         {
+
             Item item = other.gameObject.GetComponent<Item>();
 
             switch (item.itemType)
             {
                 case "Bone":
                     if (animalType == AnimalType.Dog)
-                        score += 500;
+                        Heal(15f);
                     else
-                        score += 100;
+                        Heal(5f);
                     break;
                 case "Chur":
                     if (animalType == AnimalType.Cat)
-                        score += 500;
+                        Heal(15f);
                     else
-                        score += 100;
-                    break;
-                case "Heart":
-                    curHealth += 1;
-                    if (curHealth > maxHealth)
-                        curHealth = maxHealth;
+                        Heal(5f);
                     break;
             }
 
             gameManager.ReturnPool(item);
         }
+    }
+
+    void Heal (float healAmount)
+    {
+        if (curHealth + healAmount > maxHealth)
+            curHealth = maxHealth;
+        else
+            curHealth += healAmount;
     }
 
     IEnumerator Damage()

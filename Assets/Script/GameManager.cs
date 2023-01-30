@@ -121,23 +121,18 @@ public class GameManager : MonoBehaviour
     {
         int ran = Random.Range(0, 100);
 
-        if (ran > 40)
+        if (ran > 20)
         {
             return null;
         }
-        else if (ran > 20)
+        else if (ran > 10)
         {
             Item newItem = poolManager.GetFromPool<Item>("Bone");
             return newItem;
         }
-        else if (ran > 0)
-        {
-            Item newItem = poolManager.GetFromPool<Item>("Chur");
-            return newItem;
-        }
         else
         {
-            Item newItem = poolManager.GetFromPool<Item>("Heart");
+            Item newItem = poolManager.GetFromPool<Item>("Chur");
             return newItem;
         }
     }
