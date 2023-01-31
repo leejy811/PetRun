@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
     void MapCheck() { 
         float distance = player.transform.position.x - mapInfos[curMapIndex].transform.position.x;
 
-        if (mapInfos[curMapIndex].length / 2 - distance < 16)
+        if (Mathf.Abs(distance) < 11)
         {
             int ranIndex = Random.Range(0, 100);
             int ranMapType;
@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
     {
         curMapIndex = curMapIndex == 0 ? 1 : 0;
 
-        mapInfos[curMapIndex].transform.position = curMapIndex == 0 ? new Vector3(mapInfos[1].transform.position.x + mapInfos[1].length / 2 + mapInfos[1].length / 2, 0, 0) : new Vector3(mapInfos[0].transform.position.x + mapInfos[0].length / 2 + mapInfos[0].length / 2, 0, 0);
+        mapInfos[curMapIndex].transform.position = curMapIndex == 0 ? new Vector3(mapInfos[1].transform.position.x + mapInfos[1].length, 0, 0) : new Vector3(mapInfos[0].transform.position.x + mapInfos[0].length, 0, 0);
     }
 
     void PlaceObstcle(int mapTypeIndex)

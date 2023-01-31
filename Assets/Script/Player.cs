@@ -62,7 +62,15 @@ public class Player : MonoBehaviour
             anim.SetFloat("JumpSpeed", (jumpPower / Physics.gravity.y) * -1f);
 
             if (!isDead)
+            {
                 score += speed * Time.smoothDeltaTime;
+                curHealth -= speed * Time.smoothDeltaTime / 10;
+                if (curHealth <= 0)
+                {
+                    curHealth = 0;
+                    Die();
+                }
+            }
         }
 
         transform.position = new Vector3(transform.position.x + speed * Time.smoothDeltaTime, transform.position.y, transform.position.z);
@@ -186,7 +194,6 @@ public class Player : MonoBehaviour
             if (curHealth <= 0)
             {
                 curHealth = 0;
-                Die();
                 return;
             }
             if (curDamageCoroutine != null)
@@ -203,15 +210,15 @@ public class Player : MonoBehaviour
             {
                 case "Bone":
                     if (animalType == AnimalType.Dog)
-                        Heal(15f);
+                        Heal(15);
                     else
-                        Heal(5f);
+                        Heal(3);
                     break;
                 case "Chur":
                     if (animalType == AnimalType.Cat)
-                        Heal(15f);
+                        Heal(15);
                     else
-                        Heal(5f);
+                        Heal(3);
                     break;
             }
 

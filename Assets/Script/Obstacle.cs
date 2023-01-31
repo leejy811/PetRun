@@ -30,7 +30,7 @@ public class Obstacle : MonoBehaviour, IPoolObject
         {
             float distanceX = transform.position.x - gameManager.player.transform.position.x;
 
-            if (distanceX < -5)
+            if (distanceX < -7)
                 gameManager.ReturnPool(this);
         }
     }

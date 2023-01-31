@@ -33,7 +33,7 @@ public class Item : MonoBehaviour, IPoolObject
         {
             float distanceX = transform.position.x - manager.player.transform.position.x;
 
-            if (distanceX < -5)
+            if (distanceX < -7)
             {
                 manager.ReturnPool(this);
             }

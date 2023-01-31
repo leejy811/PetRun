@@ -55,6 +55,13 @@ public class UIManager : MonoBehaviour
         }
         */
 
+        if (player.curHealth > player.maxHealth * 0.5f)
+            healthImage.color = Color.green;
+        else if (player.curHealth > player.maxHealth * 0.2f)
+            healthImage.color = Color.yellow;
+        else
+            healthImage.color = Color.red;
+
         healthImage.fillAmount = player.curHealth / player.maxHealth;
 
         scoreText.text = string.Format("{0:n0}", player.score);
