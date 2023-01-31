@@ -31,6 +31,12 @@ public class UIManager : MonoBehaviour
     public Sprite trophyIdleSprite;
     public Sprite[] trophyHighSprites;
 
+    //카운트다운 관련
+    public GameObject num3;
+    public GameObject num2;
+    public GameObject num1;
+    public GameObject go;
+
     GameManager gameManager;
 
     void Awake()
@@ -117,7 +123,18 @@ public class UIManager : MonoBehaviour
 
     IEnumerator StartSet()
     {
-        yield return new WaitForSeconds(3f);
+        num3.SetActive(true);
+        yield return new WaitForSeconds(1.0f);
+        num3.SetActive(false);
+        num2.SetActive(true);
+        yield return new WaitForSeconds(1.0f);
+        num2.SetActive(false);
+        num1.SetActive(true);
+        yield return new WaitForSeconds(1.0f);
+        num1.SetActive(false);
+        go.SetActive(true);
+        yield return new WaitForSeconds(1.0f);
+        go.SetActive(false);
         gameManager.isStart = true;
     }
 
