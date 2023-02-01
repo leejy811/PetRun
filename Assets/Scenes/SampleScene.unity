@@ -2024,7 +2024,7 @@ CompositeCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.3}
-  m_GeometryType: 0
+  m_GeometryType: 1
   m_GenerationType: 0
   m_EdgeRadius: 0
   m_ColliderPaths:
@@ -3734,7 +3734,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &606273296
 Transform:
   m_ObjectHideFlags: 0
@@ -3927,7 +3927,7 @@ GameObject:
   - component: {fileID: 632896671}
   - component: {fileID: 632896670}
   - component: {fileID: 632896669}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Dog Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9435,9 +9435,9 @@ GameObject:
   - component: {fileID: 955289957}
   - component: {fileID: 955289960}
   - component: {fileID: 955289959}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9832,7 +9832,7 @@ GameObject:
   - component: {fileID: 1001768465}
   - component: {fileID: 1001768464}
   - component: {fileID: 1001768463}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cat Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16990,7 +16990,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1876262190}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -29, y: 0, z: 0}
+  m_LocalPosition: {x: -35, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -18095,7 +18095,7 @@ CompositeCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.3}
-  m_GeometryType: 0
+  m_GeometryType: 1
   m_GenerationType: 0
   m_EdgeRadius: 0
   m_ColliderPaths:

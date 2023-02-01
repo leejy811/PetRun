@@ -101,8 +101,8 @@ public class Player : MonoBehaviour
         if (jumpDown && !isJump && gameManager.isStart)
         {
             isJump = true;
-            runCollider[0].enabled = false;
             jumpCollider[0].enabled = true;
+            runCollider[0].enabled = false;
             anim.SetBool("IsJump", true);
             rigid.velocity = new Vector2(rigid.velocity.x, jumpPower);
         }
@@ -110,8 +110,8 @@ public class Player : MonoBehaviour
 
     public void JumpAnim()
     {
-        jumpCollider[0].enabled = false;
         jumpCollider[1].enabled = true;
+        jumpCollider[0].enabled = false;
     }
 
 
@@ -122,8 +122,8 @@ public class Player : MonoBehaviour
 
         isSlide = slideDown;
         anim.SetBool("IsSlide", slideDown);
-        runCollider[1].enabled = !slideDown;
         slideCollider.enabled = slideDown;
+        runCollider[1].enabled = !slideDown;
     }
 
     public void Change(bool isButtonDown)
@@ -142,16 +142,16 @@ public class Player : MonoBehaviour
             {
                 curParticleCoroutine = StartCoroutine(ChangeParticle(1));
                 animalType = AnimalType.Cat;
-                runCollider[0].enabled = false;
                 runCollider[1].enabled = true;
+                runCollider[0].enabled = false;
                 anim.SetBool("IsChange", true);
             }
             else if (animalType == AnimalType.Cat)
             {
                 curParticleCoroutine = StartCoroutine(ChangeParticle(0));
                 animalType = AnimalType.Dog;
-                runCollider[1].enabled = false;
                 runCollider[0].enabled = true;
+                runCollider[1].enabled = false;
                 anim.SetBool("IsChange", false);
             }
         }
@@ -176,8 +176,8 @@ public class Player : MonoBehaviour
             if (isJump && jumpCollider[1].enabled)
             {
                 isJump = false;
-                jumpCollider[1].enabled = false;
                 runCollider[0].enabled = true;
+                jumpCollider[1].enabled = false;
                 anim.SetBool("IsJump", false);
             }
         }
@@ -191,7 +191,7 @@ public class Player : MonoBehaviour
         if (other.gameObject.tag == "Obstacle")
         {
 
-            curHealth -= 30;
+            curHealth -= 1;
             BoxCollider2D obstacleColider = other.gameObject.GetComponent<BoxCollider2D>();
             obstacleColider.enabled = false;
             if (curHealth <= 0)
