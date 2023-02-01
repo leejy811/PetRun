@@ -83,7 +83,7 @@ public class UIManager : MonoBehaviour
         player.Change(true);
     }
 
-    void ChangeButton()
+    public void ChangeButton()
     {
         int curIndex = jumpSlideButton[0].activeSelf == true ? 0 : 1;
         int nextIndex = curIndex == 0 ? 1 : 0;

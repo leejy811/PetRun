@@ -135,6 +135,9 @@ public class Player : MonoBehaviour
             if (curParticleCoroutine != null)
                 StopCoroutine(curParticleCoroutine);
 
+            if (!isButtonDown)
+                uiManager.ChangeButton();
+
             if (animalType == AnimalType.Dog)
             {
                 curParticleCoroutine = StartCoroutine(ChangeParticle(1));
