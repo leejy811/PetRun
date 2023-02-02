@@ -111,6 +111,8 @@ public class UIManager : MonoBehaviour
     {
         mainPanel.SetActive(false);
         howToPlayPanel.SetActive(true);
+
+        gameManager.PlaySound("Start");
     }
 
     public void InGame()
@@ -119,6 +121,7 @@ public class UIManager : MonoBehaviour
         inGamePanel.SetActive(true);
 
         StartCoroutine(StartSet());
+        gameManager.PlaySound("MenuGo");
     }
 
     IEnumerator StartSet()
@@ -150,11 +153,13 @@ public class UIManager : MonoBehaviour
         {
             curScoreText.text = string.Format("{0:n0}", highScore);
             StartCoroutine(TrophyAnimation());
+            gameManager.PlaySound("HighScore");
         }
         else
         {
             curScoreText.text = string.Format("{0:n0}", curScore);
             trophyImage.sprite = trophyIdleSprite;
+            gameManager.PlaySound("GameOver");
         }
 
         highScoreText.text = string.Format("{0:n0}", highScore);

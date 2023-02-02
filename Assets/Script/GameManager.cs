@@ -14,12 +14,19 @@ public class GameManager : MonoBehaviour
     public Transform[] backGround;
     public MapInfo[] mapInfos;
 
+    public AudioClip highScoreSound;
+    public AudioClip gameOverSound;
+    public AudioClip startSound;
+    public AudioClip menuGoSound;
+
     PoolManager poolManager;
+    AudioSource audioSource;
     string[] mapType = { "Idle", "Jump", "Slide"};
 
     void Awake()
     {
         poolManager = GetComponent<PoolManager>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -147,5 +154,26 @@ public class GameManager : MonoBehaviour
     {
         poolManager.TakeToPool<Obstacle>(clone.obstacleType, clone);
         clone.isEnable = false;
+    }
+
+    public void PlaySound(string soundType)
+    {
+        switch (soundType)
+        {
+            case "HighScore":
+                audioSource.clip = highScoreSound;
+                break;
+            case "GameOver":
+                audioSource.clip = gameOverSound;
+                break;
+            case "Start":
+                audioSource.clip = startSound;
+                break;
+            case "MenuGo":
+                audioSource.clip = menuGoSound;
+                break;
+        }
+
+        audioSource.Play();
     }
 }

@@ -14,6 +14,8 @@ public class Item : MonoBehaviour, IPoolObject
 
     public GameManager manager;
 
+    AudioSource audioSource;
+
     void Update()
     {
         if (isEnable)
@@ -42,7 +44,7 @@ public class Item : MonoBehaviour, IPoolObject
 
     public void OnCreatedInPool()
     {
-        
+        audioSource = GetComponentInParent<AudioSource>();
     }
 
     public void OnGettingFromPool()
@@ -54,4 +56,11 @@ public class Item : MonoBehaviour, IPoolObject
     {
         startY = transform.position.y;
     }
+
+    public void PlaySound()
+    {
+        audioSource.Play();
+    }
+
+    
 }

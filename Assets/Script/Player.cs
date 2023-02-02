@@ -28,9 +28,15 @@ public class Player : MonoBehaviour
     public UIManager uiManager;
     public GameObject[] particle;
 
+    public AudioClip jumpSound;
+    public AudioClip catSound;
+    public AudioClip dogSound;
+    public AudioClip getItemSound;
+
     Rigidbody2D rigid;
     SpriteRenderer renderer;
     Animator anim;
+    AudioSource audioSource;
     Coroutine curParticleCoroutine;
     Coroutine curDamageCoroutine;
 
@@ -39,9 +45,12 @@ public class Player : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         renderer = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
 
         speed = startSpeed;
         curHealth = maxHealth;
+
+        //PlayerPrefs.SetFloat("HighScore", 0);
     }
 
     void FixedUpdate()
@@ -105,6 +114,7 @@ public class Player : MonoBehaviour
             runCollider[0].enabled = false;
             anim.SetBool("IsJump", true);
             rigid.velocity = new Vector2(rigid.velocity.x, jumpPower);
+            PlaySound("Jump");
         }
     }
 
@@ -145,6 +155,7 @@ public class Player : MonoBehaviour
                 runCollider[1].enabled = true;
                 runCollider[0].enabled = false;
                 anim.SetBool("IsChange", true);
+                PlaySound("CatChange");
             }
             else if (animalType == AnimalType.Cat)
             {
@@ -153,6 +164,7 @@ public class Player : MonoBehaviour
                 runCollider[0].enabled = true;
                 runCollider[1].enabled = false;
                 anim.SetBool("IsChange", false);
+                PlaySound("DogChange");
             }
         }
     }
@@ -191,7 +203,7 @@ public class Player : MonoBehaviour
         if (other.gameObject.tag == "Obstacle")
         {
 
-            curHealth -= 1;
+            curHealth -= 30;
             BoxCollider2D obstacleColider = other.gameObject.GetComponent<BoxCollider2D>();
             obstacleColider.enabled = false;
             if (curHealth <= 0)
@@ -208,6 +220,7 @@ public class Player : MonoBehaviour
         {
 
             Item item = other.gameObject.GetComponent<Item>();
+            item.PlaySound();
 
             switch (item.itemType)
             {
@@ -277,5 +290,23 @@ public class Player : MonoBehaviour
             anim.SetTrigger("doDogRest");
         else if (animalType == AnimalType.Cat)
             anim.SetTrigger("doCatRest");
+    }
+
+    void PlaySound(string soundType)
+    {
+        switch(soundType)
+        {
+            case "Jump":
+                audioSource.clip = jumpSound;
+                break;
+            case "CatChange":
+                audioSource.clip = catSound;
+                break;
+            case "DogChange":
+                audioSource.clip = dogSound;
+                break;
+        }
+
+        audioSource.Play();
     }
 }
