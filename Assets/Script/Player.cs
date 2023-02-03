@@ -92,6 +92,7 @@ public class Player : MonoBehaviour
 
         KeyDown();
         Change(false);
+        GroundCheck();
     }
 
     void KeyDown()
@@ -123,8 +124,6 @@ public class Player : MonoBehaviour
         jumpCollider[1].enabled = true;
         jumpCollider[0].enabled = false;
     }
-
-
 
     void Slide()
     {
@@ -181,17 +180,23 @@ public class Player : MonoBehaviour
         particle[index].SetActive(false);
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void GroundCheck()
+    {
+        if (isJump && jumpCollider[1].enabled == true && transform.position.y < -2)
+        {
+            isJump = false;
+            runCollider[0].enabled = true;
+            jumpCollider[1].enabled = false;
+            anim.SetBool("IsJump", false);
+        }
+    }
+
+    void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "TileMap")
         {
-            if (isJump && jumpCollider[1].enabled)
-            {
-                isJump = false;
-                runCollider[0].enabled = true;
-                jumpCollider[1].enabled = false;
-                anim.SetBool("IsJump", false);
-            }
+            if (transform.position.y < -2.9)
+                transform.position = new Vector3(transform.position.x, -2.285f, transform.position.z);
         }
     }
 
@@ -203,7 +208,7 @@ public class Player : MonoBehaviour
         if (other.gameObject.tag == "Obstacle")
         {
 
-            curHealth -= 30;
+            curHealth -= 1;
             BoxCollider2D obstacleColider = other.gameObject.GetComponent<BoxCollider2D>();
             obstacleColider.enabled = false;
             if (curHealth <= 0)
