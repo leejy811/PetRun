@@ -126,7 +126,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obstacleType: Jump
   isEnable: 0
-  placePos: {x: 0, y: -1.8, z: 0}
+  placePos: {x: 0, y: -1.7, z: 0}
   gameManager: {fileID: 0}
   hurdleSprites:
   - {fileID: 21300000, guid: 9662f7eb8baa70845b2f59591591e5a6, type: 3}

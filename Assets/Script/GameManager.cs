@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
     {
         curMapIndex = curMapIndex == 0 ? 1 : 0;
 
-        mapInfos[curMapIndex].transform.position = curMapIndex == 0 ? new Vector3(mapInfos[1].transform.position.x + mapInfos[1].length, 0, 0) : new Vector3(mapInfos[0].transform.position.x + mapInfos[0].length, 0, 0);
+        mapInfos[curMapIndex].transform.position = curMapIndex == 0 ? new Vector3(mapInfos[1].transform.position.x + mapInfos[1].length, -0.5f, 0) : new Vector3(mapInfos[0].transform.position.x + mapInfos[0].length, -0.5f, 0);
     }
 
     void PlaceObstcle(int mapTypeIndex)
@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
         else
             newObstacle = poolManager.GetFromPool<Obstacle>("Slide");
 
-        newObstacle.transform.position = new Vector3(mapInfos[curMapIndex].transform.position.x, mapInfos[curMapIndex].transform.position.y + newObstacle.placePos.y, -1);
+        newObstacle.transform.position = new Vector3(mapInfos[curMapIndex].transform.position.x, newObstacle.placePos.y, -1);
         newObstacle.gameManager = this;
     }
 
@@ -120,7 +120,7 @@ public class GameManager : MonoBehaviour
         if (distance < 6)
         {
             curBackIndex = curBackIndex == 0 ? 1 : 0;
-            backGround[curBackIndex].position = curBackIndex == 0 ? new Vector3(backGround[1].position.x + backGroundSize, 0, 10) : new Vector3(backGround[0].position.x + backGroundSize, 0, 10);
+            backGround[curBackIndex].position = curBackIndex == 0 ? new Vector3(backGround[1].position.x + backGroundSize, 1.5f, 10) : new Vector3(backGround[0].position.x + backGroundSize, 1.5f, 10);
         }
     }
 

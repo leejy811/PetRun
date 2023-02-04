@@ -208,7 +208,7 @@ public class Player : MonoBehaviour
         if (other.gameObject.tag == "Obstacle")
         {
 
-            curHealth -= 1;
+            curHealth -= 30;
             BoxCollider2D obstacleColider = other.gameObject.GetComponent<BoxCollider2D>();
             obstacleColider.enabled = false;
             if (curHealth <= 0)
