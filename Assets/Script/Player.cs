@@ -28,7 +28,6 @@ public class Player : MonoBehaviour
     public UIManager uiManager;
     public GameObject[] particle;
 
-    public AudioClip jumpSound;
     public AudioClip catSound;
     public AudioClip dogSound;
     public AudioClip getItemSound;
@@ -115,7 +114,6 @@ public class Player : MonoBehaviour
             runCollider[0].enabled = false;
             anim.SetBool("IsJump", true);
             rigid.velocity = new Vector2(rigid.velocity.x, jumpPower);
-            PlaySound("Jump");
         }
     }
 
@@ -301,9 +299,6 @@ public class Player : MonoBehaviour
     {
         switch(soundType)
         {
-            case "Jump":
-                audioSource.clip = jumpSound;
-                break;
             case "CatChange":
                 audioSource.clip = catSound;
                 break;

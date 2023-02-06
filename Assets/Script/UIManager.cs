@@ -31,12 +31,6 @@ public class UIManager : MonoBehaviour
     public Sprite trophyIdleSprite;
     public Sprite[] trophyHighSprites;
 
-    //카운트다운 관련
-    public GameObject num3;
-    public GameObject num2;
-    public GameObject num1;
-    public GameObject go;
-
     GameManager gameManager;
 
     void Awake()
@@ -120,24 +114,22 @@ public class UIManager : MonoBehaviour
         howToPlayPanel.SetActive(false);
         inGamePanel.SetActive(true);
 
+        gameManager.isReady = true;
         StartCoroutine(StartSet());
-        gameManager.PlaySound("MenuGo");
+        gameManager.PlaySound("Go");
     }
 
     IEnumerator StartSet()
     {
-        num3.SetActive(true);
+        gameManager.countDown.transform.position = new Vector3(player.transform.position.x + 4, -2, 9);
+        gameManager.countDown.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        gameManager.startSoundSource.Play();
+        yield return new WaitForSeconds(3.0f);
+        gameManager.gunSoundSource.Play();
         yield return new WaitForSeconds(1.0f);
-        num3.SetActive(false);
-        num2.SetActive(true);
-        yield return new WaitForSeconds(1.0f);
-        num2.SetActive(false);
-        num1.SetActive(true);
-        yield return new WaitForSeconds(1.0f);
-        num1.SetActive(false);
-        go.SetActive(true);
-        yield return new WaitForSeconds(1.0f);
-        go.SetActive(false);
+        gameManager.PlaySound("OnGameIntro");
+        gameManager.isReady = false;
         gameManager.isStart = true;
     }
 

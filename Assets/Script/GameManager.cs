@@ -10,29 +10,40 @@ public class GameManager : MonoBehaviour
     public int curBackIndex;
     public float backGroundSize;
     public bool isStart;
+    public bool isReady;
     public GameObject player;
     public Transform[] backGround;
     public MapInfo[] mapInfos;
+    public CountDown countDown;
 
     public AudioClip highScoreSound;
     public AudioClip gameOverSound;
     public AudioClip startSound;
-    public AudioClip menuGoSound;
+    public AudioClip goSound;
+
+    public AudioClip lobbyIntroSound;
+    public AudioClip lobbyLoopSound;
+    public AudioClip onGameIntroSound;
+    public AudioClip onGameLoopSound;
+
+    public AudioSource effectSoundSource;
+    public AudioSource bgmSoundSource;
+    public AudioSource startSoundSource;
+    public AudioSource gunSoundSource;
 
     PoolManager poolManager;
-    AudioSource audioSource;
     string[] mapType = { "Idle", "Jump", "Slide"};
 
     void Awake()
     {
         poolManager = GetComponent<PoolManager>();
-        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
     {
         MapCheck();
         BackCheck();
+        SoundCheck();
     }
 
     void MapCheck() { 
@@ -124,6 +135,29 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void SoundCheck()
+    {
+        if (isReady)
+        {
+            bgmSoundSource.Stop();
+            return;
+        }
+
+        if (bgmSoundSource.isPlaying == false)
+        {
+            if (!isStart)
+            {
+                PlaySound("LobbyLoop");
+                bgmSoundSource.loop = true;
+            }
+            else
+            {
+                PlaySound("OnGameLoop");
+                bgmSoundSource.loop = true;
+            }
+        }
+    }
+
     Item Spawn()
     {
         int ran = Random.Range(0, 100);
@@ -158,6 +192,24 @@ public class GameManager : MonoBehaviour
 
     public void PlaySound(string soundType)
     {
+        AudioSource audioSource = null;
+
+        switch (soundType)
+        {
+            case "HighScore":
+            case "GameOver":
+            case "Start":
+            case "Go":
+                audioSource = effectSoundSource;
+                break;
+            case "LobbyIntro":
+            case "LobbyLoop":
+            case "OnGameIntro":
+            case "OnGameLoop":
+                audioSource = bgmSoundSource;
+                break;
+        }
+
         switch (soundType)
         {
             case "HighScore":
@@ -169,8 +221,21 @@ public class GameManager : MonoBehaviour
             case "Start":
                 audioSource.clip = startSound;
                 break;
-            case "MenuGo":
-                audioSource.clip = menuGoSound;
+            case "Go":
+                audioSource.clip = goSound;
+                break;
+            case "LobbyIntro":
+                audioSource.clip = lobbyIntroSound;
+                break;
+            case "LobbyLoop":
+                audioSource.clip = lobbyLoopSound;
+                break;
+            case "OnGameIntro":
+                audioSource.clip = onGameIntroSound;
+                audioSource.loop = false;
+                break;
+            case "OnGameLoop":
+                audioSource.clip = onGameLoopSound;
                 break;
         }
 

@@ -11,6 +11,6 @@ public class BackFollow : MonoBehaviour
     {
         if (player.isFall) return;
 
-        transform.position = new Vector3(transform.position.x + player.speed * speedRatio * Time.smoothDeltaTime, 1.5f, 10);
+        transform.position = new Vector3(transform.position.x + player.speed * speedRatio * Time.smoothDeltaTime, transform.position.y, transform.position.z);
     }
 }
