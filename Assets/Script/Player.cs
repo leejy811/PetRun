@@ -24,10 +24,10 @@ public class Player : MonoBehaviour
     //public 플래그 변수
     public bool isFall;
     public bool isHighScore;
+    public bool isJump;
+    public bool isSlide;
 
     //private 플래그 변수
-    private bool isJump;
-    private bool isSlide;
     private bool isDead;
     private bool isMaxSpeed;
 
@@ -253,8 +253,8 @@ public class Player : MonoBehaviour
 
         if (other.gameObject.tag == "Obstacle")
         {
-
-            curHealth -= 1;
+            Handheld.Vibrate();
+            curHealth -= 30;
             BoxCollider2D obstacleColider = other.gameObject.GetComponent<BoxCollider2D>();
             obstacleColider.enabled = false;
             if (curHealth <= 0)

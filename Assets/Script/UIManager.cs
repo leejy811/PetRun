@@ -21,8 +21,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject howToPlayPanel;
     [SerializeField] GameObject gameOverPanel;
 
-    //Image (체력, 트로피)
+    //체력 관련
+    [SerializeField] Gradient gradient;
     [SerializeField] Image healthImage;
+
+    //트로피 관련
     [SerializeField] Image trophyImage;
     [SerializeField] Sprite trophyIdleSprite;
     [SerializeField] Sprite[] trophyHighSprites;
@@ -38,21 +41,17 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
-        if (player.curHealth > player.maxHealth * 0.5f)
-            healthImage.color = Color.green;
-        else if (player.curHealth > player.maxHealth * 0.2f)
-            healthImage.color = Color.yellow;
-        else
-            healthImage.color = Color.red;
+        float helathRatio = player.curHealth / player.maxHealth;
+        healthImage.color = gradient.Evaluate(helathRatio);
 
-        healthImage.fillAmount = player.curHealth / player.maxHealth;
+        healthImage.fillAmount = helathRatio;
 
         scoreText.text = string.Format("{0:n0}", player.score);
     }
 
     public void Change()
     {
-        if (!gameManager.isStart)
+        if (!gameManager.isStart || player.isJump || player.isSlide)
             return;
 
         ChangeButton();
