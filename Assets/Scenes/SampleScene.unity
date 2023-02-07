@@ -614,7 +614,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 168814696}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.5, y: -2.2, z: -2}
+  m_LocalPosition: {x: -7, y: -2.2, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -645,7 +645,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 173479386}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.5, y: 0.5, z: -2}
+  m_LocalPosition: {x: -3.8, y: 0.5, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10779,17 +10779,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fe7a6c9382ffb4f842f54bce402bad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animalType: 0
-  jumpPower: 20
   speed: 0
-  startSpeed: 3
-  acceleration: 0.5
-  maxHealth: 100
-  curHealth: 100
   score: 0
-  isJump: 0
-  isSlide: 0
-  isDead: 0
+  curHealth: 100
   isFall: 0
   isHighScore: 0
   runCollider:
@@ -10806,7 +10798,6 @@ MonoBehaviour:
   - {fileID: 1001768461}
   catSound: {fileID: 8300000, guid: 70240b1eb0acbf84e913d8e501e942ef, type: 3}
   dogSound: {fileID: 8300000, guid: 8fe6700d9653cde4ca29f590e8435970, type: 3}
-  getItemSound: {fileID: 8300000, guid: f981e06a6085337428cc83eee259368b, type: 3}
 --- !u!95 &955289955
 Animator:
   serializedVersion: 5
@@ -17036,7 +17027,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1382214801}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.5, y: 0.5, z: -2}
+  m_LocalPosition: {x: 3.8, y: 0.5, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -17243,9 +17234,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: f981e06a6085337428cc83eee259368b, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 78944453b7e933845950892b91b8c544, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -19199,7 +19190,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1730898210}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: -2}
+  m_LocalPosition: {x: 0, y: 3, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -19846,7 +19837,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1970478174}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.5, y: -2.2, z: -2}
+  m_LocalPosition: {x: 7, y: -2.2, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

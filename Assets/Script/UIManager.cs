@@ -19,8 +19,6 @@ public class UIManager : MonoBehaviour
     public Text curScoreText;
 
     // 체력 관련
-    //public Image[] Life;
-    //public Sprite heart, noHeart;
     public Image healthImage;
 
     public GameObject[] jumpSlideButton;
@@ -40,21 +38,6 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
-        /*
-        for (int i = 0; i<player.maxHealth; i++)
-        {
-            Life[i].sprite = noHeart;
-        }
-
-        for (int i = 0; i<player.maxHealth; i++)
-        {
-            if (i<player.curHealth)
-            {
-                Life[i].sprite = heart;
-            }
-        }
-        */
-
         if (player.curHealth > player.maxHealth * 0.5f)
             healthImage.color = Color.green;
         else if (player.curHealth > player.maxHealth * 0.2f)

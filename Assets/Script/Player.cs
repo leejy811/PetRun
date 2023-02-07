@@ -5,51 +5,61 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public enum AnimalType { Dog, Cat };
-    public AnimalType animalType;
-    public float jumpPower;
-    public float speed;
-    public float startSpeed;
-    public float acceleration;
-    public float maxHealth;
-    public float curHealth;
-    public float score;
+    //private 플레이어 타입
+    private enum AnimalType { Dog, Cat };
+    private AnimalType animalType;
 
-    public bool isJump;
-    public bool isSlide;
-    public bool isDead;
+    //public float형 물리, 체력, 점수 관련
+    public float speed;
+    public float score;
+    public float curHealth;
+    public readonly float maxHealth = 100;
+
+    //private float형 물리, 체력, 점수 관련
+    private readonly float startSpeed = 3;
+    private readonly float accel = 0.5f;
+    private float jumpPower;
+
+    //public 플래그 변수
     public bool isFall;
     public bool isHighScore;
 
-    public BoxCollider2D[] runCollider;
-    public PolygonCollider2D[] jumpCollider;
-    public BoxCollider2D slideCollider;
-    public GameManager gameManager;
-    public UIManager uiManager;
-    public GameObject[] particle;
+    //public 플래그 변수
+    private bool isJump;
+    private bool isSlide;
+    private bool isDead;
 
-    public AudioClip catSound;
-    public AudioClip dogSound;
-    public AudioClip getItemSound;
+    //SerializeField된 컴포넌트 변수 
+    [SerializeField]  BoxCollider2D[] runCollider;
+    [SerializeField]  PolygonCollider2D[] jumpCollider;
+    [SerializeField]  BoxCollider2D slideCollider;
+    [SerializeField] GameManager gameManager;
+    [SerializeField] UIManager uiManager;
+    [SerializeField] GameObject[] particle;
 
-    Rigidbody2D rigid;
-    SpriteRenderer renderer;
-    Animator anim;
+    //오디오 관련 변수
+    [SerializeField] AudioClip catSound;
+    [SerializeField] AudioClip dogSound;
     AudioSource audioSource;
+
+    //컴포넌트 변수
+    Rigidbody2D rigid;
+    SpriteRenderer spriteRenderer;
+    Animator anim;
+    
+    //코루틴 변수
     Coroutine curParticleCoroutine;
     Coroutine curDamageCoroutine;
 
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
-        renderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
 
         speed = startSpeed;
         curHealth = maxHealth;
-
-        //PlayerPrefs.SetFloat("HighScore", 0);
     }
 
     void FixedUpdate()
@@ -64,7 +74,7 @@ public class Player : MonoBehaviour
     {
         if (gameManager.isStart) 
         {
-            speed += acceleration * Time.smoothDeltaTime;
+            speed += accel * Time.smoothDeltaTime;
             Physics2D.gravity = new Vector2(0, -0.284f * speed * speed);
             jumpPower = 3.5f * Mathf.Sqrt(Physics2D.gravity.y * -1f);
             anim.SetFloat("JumpSpeed", (jumpPower / Physics.gravity.y) * -1f);
@@ -86,12 +96,13 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        GroundCheck();
+
         if (isDead)
             return;
 
         KeyDown();
         Change(false);
-        GroundCheck();
     }
 
     void KeyDown()
@@ -180,7 +191,7 @@ public class Player : MonoBehaviour
 
     void GroundCheck()
     {
-        if (isJump && jumpCollider[1].enabled == true && transform.position.y < -2)
+        if (isJump && jumpCollider[1].enabled && transform.position.y < -2)
         {
             isJump = false;
             runCollider[0].enabled = true;
@@ -223,19 +234,24 @@ public class Player : MonoBehaviour
         {
 
             Item item = other.gameObject.GetComponent<Item>();
-            item.PlaySound();
 
             switch (item.itemType)
             {
                 case "Bone":
                     if (animalType == AnimalType.Dog)
+                    {
+                        item.PlaySound();
                         Heal(15);
+                    }
                     else
                         Heal(3);
                     break;
                 case "Chur":
                     if (animalType == AnimalType.Cat)
+                    {
+                        item.PlaySound();
                         Heal(15);
+                    }
                     else
                         Heal(3);
                     break;
@@ -255,9 +271,9 @@ public class Player : MonoBehaviour
 
     IEnumerator Damage()
     {
-        renderer.color = Color.gray;
+        spriteRenderer.color = Color.gray;
         yield return new WaitForSeconds(0.5f);
-        renderer.color = Color.white;
+        spriteRenderer.color = Color.white;
     }
 
     void Die()
