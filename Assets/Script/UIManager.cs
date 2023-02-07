@@ -6,30 +6,30 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
-    public Player player;
-    public Text scoreText;
-    public Text highScoreText;
+    //컴포넌트 관련
+    [SerializeField] Player player;
+    GameManager gameManager;
+
+    //Text
+    [SerializeField] Text scoreText;
+    [SerializeField] Text highScoreText;
+    [SerializeField] Text curScoreText;
 
     //panel
-    public GameObject mainPanel;
-    public GameObject inGamePanel;
-    public GameObject howToPlayPanel;
-    public GameObject gameOverPanel;
+    [SerializeField] GameObject mainPanel;
+    [SerializeField] GameObject inGamePanel;
+    [SerializeField] GameObject howToPlayPanel;
+    [SerializeField] GameObject gameOverPanel;
 
-    public Text curScoreText;
+    //Image (체력, 트로피)
+    [SerializeField] Image healthImage;
+    [SerializeField] Image trophyImage;
+    [SerializeField] Sprite trophyIdleSprite;
+    [SerializeField] Sprite[] trophyHighSprites;
 
-    // 체력 관련
-    public Image healthImage;
-
-    public GameObject[] jumpSlideButton;
+    //버튼 관련
+    [SerializeField] GameObject[] jumpSlideButton;
     public bool isSlideButtonDown;
-
-    //트로피 관련
-    public Image trophyImage;
-    public Sprite trophyIdleSprite;
-    public Sprite[] trophyHighSprites;
-
-    GameManager gameManager;
 
     void Awake()
     {
@@ -97,24 +97,9 @@ public class UIManager : MonoBehaviour
         howToPlayPanel.SetActive(false);
         inGamePanel.SetActive(true);
 
-        gameManager.isReady = true;
-        StartCoroutine(StartSet());
-        gameManager.PlaySound("Go");
+        StartCoroutine(gameManager.StartSet());
     }
 
-    IEnumerator StartSet()
-    {
-        gameManager.countDown.transform.position = new Vector3(player.transform.position.x + 4, -2, 9);
-        gameManager.countDown.gameObject.SetActive(true);
-        yield return new WaitForSeconds(0.5f);
-        gameManager.startSoundSource.Play();
-        yield return new WaitForSeconds(3.0f);
-        gameManager.gunSoundSource.Play();
-        yield return new WaitForSeconds(1.0f);
-        gameManager.PlaySound("OnGameIntro");
-        gameManager.isReady = false;
-        gameManager.isStart = true;
-    }
 
     public void GameOver()
     {

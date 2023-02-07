@@ -16,18 +16,20 @@ public class Player : MonoBehaviour
     public readonly float maxHealth = 100;
 
     //private float형 물리, 체력, 점수 관련
+    private readonly float maxSpeed = 30;
     private readonly float startSpeed = 3;
-    private readonly float accel = 0.5f;
+    private readonly float accel = 0.2f;
     private float jumpPower;
 
     //public 플래그 변수
     public bool isFall;
     public bool isHighScore;
 
-    //public 플래그 변수
+    //private 플래그 변수
     private bool isJump;
     private bool isSlide;
     private bool isDead;
+    private bool isMaxSpeed;
 
     //SerializeField된 컴포넌트 변수 
     [SerializeField]  BoxCollider2D[] runCollider;
@@ -74,29 +76,53 @@ public class Player : MonoBehaviour
     {
         if (gameManager.isStart) 
         {
-            speed += accel * Time.smoothDeltaTime;
-            Physics2D.gravity = new Vector2(0, -0.284f * speed * speed);
-            jumpPower = 3.5f * Mathf.Sqrt(Physics2D.gravity.y * -1f);
-            anim.SetFloat("JumpSpeed", (jumpPower / Physics.gravity.y) * -1f);
+            PhysicsSet();
+            MaxSpeedCheck();
 
             if (!isDead)
             {
-                score += speed * Time.smoothDeltaTime;
-                curHealth -= speed * Time.smoothDeltaTime / 10;
-                if (curHealth <= 0)
-                {
-                    curHealth = 0;
-                    Die();
-                }
+                score += speed * Time.fixedDeltaTime * 5;
+
+                calculateHealth();
             }
         }
 
-        transform.position = new Vector3(transform.position.x + speed * Time.smoothDeltaTime, transform.position.y, transform.position.z);
+        transform.position = new Vector3(transform.position.x + speed * Time.fixedDeltaTime, transform.position.y, transform.position.z);
+    }
+
+    void PhysicsSet()
+    {
+        if (!isMaxSpeed)
+        {
+            speed += accel * Time.fixedDeltaTime;
+            Physics2D.gravity = new Vector2(0, -0.284f * speed * speed);
+            jumpPower = 3.5f * Mathf.Sqrt(Physics2D.gravity.y * -1f);
+        }
+    }
+
+    void MaxSpeedCheck()
+    {
+        if (speed > maxSpeed)
+        {
+            speed = maxSpeed;
+            isMaxSpeed = true;
+        }
+    }
+
+    void calculateHealth()
+    {
+        curHealth -= speed * Time.fixedDeltaTime / 20;
+        if (curHealth <= 0)
+        {
+            curHealth = 0;
+            Die();
+        }
     }
 
     void Update()
     {
         GroundCheck();
+        JumpCheck();
 
         if (isDead)
             return;
@@ -123,15 +149,10 @@ public class Player : MonoBehaviour
             isJump = true;
             jumpCollider[0].enabled = true;
             runCollider[0].enabled = false;
+            anim.SetFloat("JumpSpeed", (jumpPower / Physics.gravity.y) * -1f);
             anim.SetBool("IsJump", true);
             rigid.velocity = new Vector2(rigid.velocity.x, jumpPower);
         }
-    }
-
-    public void JumpAnim()
-    {
-        jumpCollider[1].enabled = true;
-        jumpCollider[0].enabled = false;
     }
 
     void Slide()
@@ -193,10 +214,26 @@ public class Player : MonoBehaviour
     {
         if (isJump && jumpCollider[1].enabled && transform.position.y < -2)
         {
-            isJump = false;
+            StartCoroutine(JumpFalse());
             runCollider[0].enabled = true;
             jumpCollider[1].enabled = false;
             anim.SetBool("IsJump", false);
+        }
+    }
+
+    IEnumerator JumpFalse()
+    {
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+        isJump = false;
+    }
+
+    void JumpCheck()
+    {
+        if (isJump && jumpCollider[0].enabled && transform.position.y > 2.5f)
+        {
+            jumpCollider[1].enabled = true;
+            jumpCollider[0].enabled = false;
         }
     }
 
@@ -217,7 +254,7 @@ public class Player : MonoBehaviour
         if (other.gameObject.tag == "Obstacle")
         {
 
-            curHealth -= 30;
+            curHealth -= 1;
             BoxCollider2D obstacleColider = other.gameObject.GetComponent<BoxCollider2D>();
             obstacleColider.enabled = false;
             if (curHealth <= 0)
@@ -298,7 +335,6 @@ public class Player : MonoBehaviour
             else if (animalType == AnimalType.Cat)
                 anim.SetTrigger("doCatFall");
 
-            //게임 오버 UI작동
             uiManager.GameOver();
         }
     }

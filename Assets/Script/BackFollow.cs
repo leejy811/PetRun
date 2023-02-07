@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class BackFollow : MonoBehaviour
 {
-    public Player player;
-    public float speedRatio;
+    [SerializeField] protected Player player;
+    private float speedRatio = 0.9f;
 
     void FixedUpdate()
     {

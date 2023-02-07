@@ -7,13 +7,15 @@ public class Item : MonoBehaviour, IPoolObject
 {
     public string itemType;
 
-    public float floatSpeed;
-    public float floatRange;
-    public float startY;
     public bool isEnable;
 
-    public GameManager manager;
+    //떠있는 모션 관련 변수
+    private readonly float floatRange = 0.15f;
+    private float floatSpeed = 0.3f;
+    private float startY;
 
+    //컴포넌트 관련 변수
+    public GameManager manager;
     AudioSource audioSource;
 
     void Update()

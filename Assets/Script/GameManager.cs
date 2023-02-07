@@ -6,33 +6,45 @@ using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
-    public int curMapIndex;
-    public int curBackIndex;
-    public float backGroundSize;
+    //BackGround, Map 관련
+    private int curMapIndex;
+    private int curBackIndex;
+    private readonly float backGroundSize = 23.5f;
+    private readonly float mapLength = 30;
+    private string[] mapType = { "Idle", "Jump", "Slide" };
+
+    //플래그 변수
     public bool isStart;
-    public bool isReady;
-    public GameObject player;
-    public Transform[] backGround;
-    public MapInfo[] mapInfos;
-    public CountDown countDown;
+    private bool isReady;
 
-    public AudioClip highScoreSound;
-    public AudioClip gameOverSound;
-    public AudioClip startSound;
-    public AudioClip goSound;
-
-    public AudioClip lobbyIntroSound;
-    public AudioClip lobbyLoopSound;
-    public AudioClip onGameIntroSound;
-    public AudioClip onGameLoopSound;
-
-    public AudioSource effectSoundSource;
-    public AudioSource bgmSoundSource;
-    public AudioSource startSoundSource;
-    public AudioSource gunSoundSource;
-
+    //오브젝트, 컴포넌트 변수
+    public Player player;
+    [SerializeField] Transform[] backGround;
+    [SerializeField] GameObject[] mapObject;
+    [SerializeField] CountDown countDown;
     PoolManager poolManager;
-    string[] mapType = { "Idle", "Jump", "Slide"};
+
+    //효과음 클립
+    [SerializeField] AudioClip highScoreSound;
+    [SerializeField] AudioClip gameOverSound;
+    [SerializeField] AudioClip startSound;
+    [SerializeField] AudioClip goSound;
+
+    //BGM 클립
+    [SerializeField] AudioClip lobbyIntroSound;
+    [SerializeField] AudioClip lobbyLoopSound;
+    [SerializeField] AudioClip onGameIntroSound;
+    [SerializeField] AudioClip onGameLoopSound;
+
+    //오디오 소스
+    [SerializeField] AudioSource effectSoundSource;
+    [SerializeField] AudioSource bgmSoundSource;
+    [SerializeField] AudioSource startSoundSource;
+    [SerializeField] AudioSource gunSoundSource;
+
+    //아이템 생성 위치 관련
+    [SerializeField] Transform[] jumpItemSpawnPos;
+    [SerializeField] Transform[] SlideItemSpawnPos;
 
     void Awake()
     {
@@ -47,7 +59,7 @@ public class GameManager : MonoBehaviour
     }
 
     void MapCheck() { 
-        float distance = player.transform.position.x - mapInfos[curMapIndex].transform.position.x;
+        float distance = player.transform.position.x - mapObject[curMapIndex].transform.position.x;
 
         if (Mathf.Abs(distance) < 11)
         {
@@ -71,7 +83,7 @@ public class GameManager : MonoBehaviour
     {
         curMapIndex = curMapIndex == 0 ? 1 : 0;
 
-        mapInfos[curMapIndex].transform.position = curMapIndex == 0 ? new Vector3(mapInfos[1].transform.position.x + mapInfos[1].length, -0.5f, 0) : new Vector3(mapInfos[0].transform.position.x + mapInfos[0].length, -0.5f, 0);
+        mapObject[curMapIndex].transform.position = curMapIndex == 0 ? new Vector3(mapObject[1].transform.position.x + mapLength, -0.5f, 0) : new Vector3(mapObject[0].transform.position.x + mapLength, -0.5f, 0);
     }
 
     void PlaceObstcle(int mapTypeIndex)
@@ -86,7 +98,7 @@ public class GameManager : MonoBehaviour
         else
             newObstacle = poolManager.GetFromPool<Obstacle>("Slide");
 
-        newObstacle.transform.position = new Vector3(mapInfos[curMapIndex].transform.position.x, newObstacle.placePos.y, -1);
+        newObstacle.transform.position = new Vector3(mapObject[curMapIndex].transform.position.x, newObstacle.placePos.y, -1);
         newObstacle.gameManager = this;
     }
 
@@ -96,19 +108,19 @@ public class GameManager : MonoBehaviour
             return;
 
         if (mapType[mapTypeIndex] == "Jump")
-            foreach (Transform spawnPos in mapInfos[curMapIndex].jumpItemSpawnPos)
+            foreach (Transform spawnPos in jumpItemSpawnPos)
                 SetItemPosition(spawnPos);
         else if (mapType[mapTypeIndex] == "Slide")
-            foreach (Transform spawnPos in mapInfos[curMapIndex].SlideItemSpawnPos)
+            foreach (Transform spawnPos in SlideItemSpawnPos)
                 SetItemPosition(spawnPos);
         else if (mapType[mapTypeIndex] == "Idle")
         {
             int ranType = Random.Range(0, 2);
             if (ranType == 0)
-                foreach (Transform spawnPos in mapInfos[curMapIndex].jumpItemSpawnPos)
+                foreach (Transform spawnPos in jumpItemSpawnPos)
                     SetItemPosition(spawnPos);
             else
-                foreach (Transform spawnPos in mapInfos[curMapIndex].SlideItemSpawnPos)
+                foreach (Transform spawnPos in SlideItemSpawnPos)
                     SetItemPosition(spawnPos);
         }
     }
@@ -118,7 +130,7 @@ public class GameManager : MonoBehaviour
         Item newItem = Spawn();
         if (newItem != null)
         {
-            newItem.transform.position = spawnPos.position + mapInfos[curMapIndex].transform.position;
+            newItem.transform.position = spawnPos.position + mapObject[curMapIndex].transform.position;
             newItem.Init();
             newItem.manager = this;
         }
@@ -137,7 +149,7 @@ public class GameManager : MonoBehaviour
 
     void SoundCheck()
     {
-        if (isReady)
+        if (isReady || player.isFall)
         {
             bgmSoundSource.Stop();
             return;
@@ -240,5 +252,21 @@ public class GameManager : MonoBehaviour
         }
 
         audioSource.Play();
+    }
+
+    public IEnumerator StartSet()
+    {
+        PlaySound("Go");
+        isReady = true;
+        countDown.transform.position = new Vector3(player.transform.position.x + 4, -2, 9);
+        countDown.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        startSoundSource.Play();
+        yield return new WaitForSeconds(3.0f);
+        gunSoundSource.Play();
+        yield return new WaitForSeconds(1.0f);
+        PlaySound("OnGameIntro");
+        isReady = false;
+        isStart = true;
     }
 }

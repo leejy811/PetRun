@@ -6,13 +6,17 @@ using Redcode.Pools;
 public class Obstacle : MonoBehaviour, IPoolObject
 {
     public string obstacleType;
+
     public bool isEnable;
 
     public Vector3 placePos;
-    public GameManager gameManager;
 
-    public Sprite[] hurdleSprites;
-    public SpriteRenderer spriteRenderer;
+    //컴포넌트 관련
+    public GameManager gameManager;
+    SpriteRenderer spriteRenderer;
+
+    //이미지 관련
+    [SerializeField] Sprite[] hurdleSprites;
 
     void Awake()
     {
