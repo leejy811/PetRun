@@ -3159,6 +3159,7 @@ GameObject:
   - component: {fileID: 410704987}
   - component: {fileID: 410704986}
   - component: {fileID: 410704989}
+  - component: {fileID: 410704994}
   - component: {fileID: 410704990}
   - component: {fileID: 410704991}
   - component: {fileID: 410704993}
@@ -3710,6 +3711,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &410704994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 410704985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baa087cc0dd268e4b911ed379273ed57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvas: {fileID: 2131364115}
 --- !u!1 &416268105
 GameObject:
   m_ObjectHideFlags: 0
@@ -20579,7 +20593,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_TargetDisplay: 0
 --- !u!224 &2131364116
 RectTransform:

@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
     //컴포넌트 관련
     [SerializeField] Player player;
     GameManager gameManager;
+    AdManager adManager;
 
     //Text
     [SerializeField] Text scoreText;
@@ -37,6 +37,7 @@ public class UIManager : MonoBehaviour
     void Awake()
     {
         gameManager = GetComponent<GameManager>();
+        adManager = GetComponent<AdManager>();
     }
 
     void Update()
@@ -137,6 +138,6 @@ public class UIManager : MonoBehaviour
 
     public void Restart()
     {
-        SceneManager.LoadScene(0);
+        adManager.ShowAd();
     }
 }
