@@ -3,61 +3,79 @@ using System.Collections.Generic;
 using UnityEngine;
 using GoogleMobileAds;
 using GoogleMobileAds.Api;
-using UnityEngine.SceneManagement;
 using System;
+using UnityEngine.SceneManagement;
 
 public class AdManager : MonoBehaviour
-{   
-    [SerializeField] Canvas canvas;
-
+{
+    // These ad units are configured to always serve test ads.
     #if UNITY_ANDROID
         private string _adUnitId = "ca-app-pub-2079986244432267/6130186663";
     #elif UNITY_IPHONE
-      private string _adUnitId = "ca-app-pub-3940256099942544/4411468910";
+        private string _adUnitId = "ca-app-pub-3940256099942544/4411468910";
     #else
-      private string _adUnitId = "unused";
+        private string _adUnitId = "unused";
     #endif
 
-    public InterstitialAd interstitialAd;
+    private InterstitialAd interstitialAd;
 
     void Start()
     {
-        MobileAds.Initialize((InitializationStatus initStatus) => { });
-        LoadInterstitialAd();
+        MobileAds.Initialize((InitializationStatus initStatus) => { LoadInterstitialAd(); });
     }
 
-    void LoadInterstitialAd()
+    /// <summary>
+    /// Loads the interstitial ad.
+    /// </summary>
+    public void LoadInterstitialAd()
     {
+        // Clean up the old ad before loading a new one.
         if (interstitialAd != null)
         {
             interstitialAd.Destroy();
             interstitialAd = null;
         }
 
+        Debug.Log("Loading the interstitial ad.");
+
+        // create our request used to load the ad.
         var adRequest = new AdRequest.Builder()
                 .AddKeyword("unity-admob-sample")
                 .Build();
 
+        // send the request to load the ad.
         InterstitialAd.Load(_adUnitId, adRequest,
             (InterstitialAd ad, LoadAdError error) =>
             {
+                // if error is not null, the load request failed.
                 if (error != null || ad == null)
                 {
+                    Debug.LogError("interstitial ad failed to load an ad " +
+                                   "with error : " + error);
                     return;
                 }
 
-                interstitialAd = ad;
-            });
+                Debug.Log("Interstitial ad loaded with response : "
+                          + ad.GetResponseInfo());
 
-        RegisterEventHandlers(interstitialAd);
+                interstitialAd = ad;
+                RegisterEventHandlers(interstitialAd);
+            });
     }
 
+    /// <summary>
+    /// Shows the interstitial ad.
+    /// </summary>
     public void ShowAd()
     {
-        canvas.sortingOrder = -1;
         if (interstitialAd != null && interstitialAd.CanShowAd())
         {
+            Debug.Log("Showing interstitial ad.");
             interstitialAd.Show();
+        }
+        else
+        {
+            Debug.LogError("Interstitial ad is not ready yet.");
         }
     }
 
@@ -65,7 +83,8 @@ public class AdManager : MonoBehaviour
     {
         ad.OnAdFullScreenContentClosed += () =>
         {
-            interstitialAd.Destroy();
+            LoadInterstitialAd();
+            Debug.Log("Interstitial ad full screen content closed.");
             SceneManager.LoadScene(0);
         };
     }

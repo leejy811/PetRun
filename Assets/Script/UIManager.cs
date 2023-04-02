@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -97,6 +98,7 @@ public class UIManager : MonoBehaviour
         howToPlayPanel.SetActive(false);
         inGamePanel.SetActive(true);
 
+        adManager.LoadInterstitialAd();
         StartCoroutine(gameManager.StartSet());
     }
 

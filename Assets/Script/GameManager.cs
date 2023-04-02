@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Redcode.Pools;
 using UnityEngine.UIElements;
-using GoogleMobileAds.Api;
 
 public class GameManager : MonoBehaviour
 {
@@ -176,8 +175,6 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            AdManager adManager = GetComponent<AdManager>();
-            adManager.interstitialAd.Destroy();
             Application.Quit();
         }
     }
